@@ -1,0 +1,2223 @@
+[
+  {
+    "job_id": "job_001",
+    "candidate_relevance": {
+      "candidate_001": 2,
+      "candidate_002": 2,
+      "candidate_003": 2,
+      "candidate_004": 1,
+      "candidate_005": 0,
+      "candidate_006": 1,
+      "candidate_007": 0,
+      "candidate_008": 0,
+      "candidate_009": 0,
+      "candidate_010": 0,
+      "candidate_011": 0,
+      "candidate_012": 0,
+      "candidate_013": 0,
+      "candidate_014": 0,
+      "candidate_015": 0,
+      "candidate_016": 0,
+      "candidate_017": 0,
+      "candidate_018": 0,
+      "candidate_019": 0,
+      "candidate_020": 0,
+      "candidate_021": 0,
+      "candidate_022": 0,
+      "candidate_023": 0,
+      "candidate_024": 1,
+      "candidate_025": 1,
+      "candidate_026": 0,
+      "candidate_027": 0,
+      "candidate_028": 0,
+      "candidate_029": 0,
+      "candidate_030": 0,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_001",
+      "candidate_002",
+      "candidate_003",
+      "candidate_004",
+      "candidate_006",
+      "candidate_024",
+      "candidate_025"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_002": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_003": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_004": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_005": [
+        "wrong_domain"
+      ],
+      "candidate_006": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_007": [
+        "wrong_domain"
+      ],
+      "candidate_008": [
+        "wrong_domain"
+      ],
+      "candidate_009": [
+        "wrong_domain"
+      ],
+      "candidate_010": [
+        "wrong_domain"
+      ],
+      "candidate_011": [
+        "wrong_domain"
+      ],
+      "candidate_012": [
+        "wrong_domain"
+      ],
+      "candidate_013": [
+        "wrong_domain"
+      ],
+      "candidate_014": [
+        "wrong_domain"
+      ],
+      "candidate_015": [
+        "wrong_domain"
+      ],
+      "candidate_016": [
+        "wrong_domain"
+      ],
+      "candidate_017": [
+        "wrong_domain"
+      ],
+      "candidate_018": [
+        "wrong_domain"
+      ],
+      "candidate_019": [
+        "wrong_domain"
+      ],
+      "candidate_020": [
+        "wrong_domain"
+      ],
+      "candidate_021": [
+        "wrong_domain"
+      ],
+      "candidate_022": [
+        "wrong_domain"
+      ],
+      "candidate_023": [
+        "wrong_domain"
+      ],
+      "candidate_024": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_025": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_026": [
+        "wrong_domain"
+      ],
+      "candidate_027": [
+        "wrong_domain"
+      ],
+      "candidate_028": [
+        "wrong_domain"
+      ],
+      "candidate_029": [
+        "wrong_domain"
+      ],
+      "candidate_030": [
+        "wrong_domain"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  },
+  {
+    "job_id": "job_002",
+    "candidate_relevance": {
+      "candidate_001": 1,
+      "candidate_002": 2,
+      "candidate_003": 1,
+      "candidate_004": 2,
+      "candidate_005": 2,
+      "candidate_006": 0,
+      "candidate_007": 0,
+      "candidate_008": 0,
+      "candidate_009": 0,
+      "candidate_010": 0,
+      "candidate_011": 0,
+      "candidate_012": 0,
+      "candidate_013": 0,
+      "candidate_014": 0,
+      "candidate_015": 0,
+      "candidate_016": 0,
+      "candidate_017": 0,
+      "candidate_018": 0,
+      "candidate_019": 0,
+      "candidate_020": 0,
+      "candidate_021": 0,
+      "candidate_022": 0,
+      "candidate_023": 0,
+      "candidate_024": 0,
+      "candidate_025": 0,
+      "candidate_026": 0,
+      "candidate_027": 1,
+      "candidate_028": 1,
+      "candidate_029": 0,
+      "candidate_030": 0,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_002",
+      "candidate_004",
+      "candidate_005",
+      "candidate_001",
+      "candidate_003",
+      "candidate_027",
+      "candidate_028"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_002": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_003": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_004": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_005": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_006": [
+        "wrong_domain"
+      ],
+      "candidate_007": [
+        "wrong_domain"
+      ],
+      "candidate_008": [
+        "wrong_domain"
+      ],
+      "candidate_009": [
+        "wrong_domain"
+      ],
+      "candidate_010": [
+        "wrong_domain"
+      ],
+      "candidate_011": [
+        "wrong_domain"
+      ],
+      "candidate_012": [
+        "wrong_domain"
+      ],
+      "candidate_013": [
+        "wrong_domain"
+      ],
+      "candidate_014": [
+        "wrong_domain"
+      ],
+      "candidate_015": [
+        "wrong_domain"
+      ],
+      "candidate_016": [
+        "wrong_domain"
+      ],
+      "candidate_017": [
+        "wrong_domain"
+      ],
+      "candidate_018": [
+        "wrong_domain"
+      ],
+      "candidate_019": [
+        "wrong_domain"
+      ],
+      "candidate_020": [
+        "wrong_domain"
+      ],
+      "candidate_021": [
+        "wrong_domain"
+      ],
+      "candidate_022": [
+        "wrong_domain"
+      ],
+      "candidate_023": [
+        "wrong_domain"
+      ],
+      "candidate_024": [
+        "wrong_domain"
+      ],
+      "candidate_025": [
+        "wrong_domain"
+      ],
+      "candidate_026": [
+        "wrong_domain"
+      ],
+      "candidate_027": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_028": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_029": [
+        "wrong_domain"
+      ],
+      "candidate_030": [
+        "wrong_domain"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  },
+  {
+    "job_id": "job_003",
+    "candidate_relevance": {
+      "candidate_001": 1,
+      "candidate_002": 0,
+      "candidate_003": 0,
+      "candidate_004": 0,
+      "candidate_005": 0,
+      "candidate_006": 2,
+      "candidate_007": 2,
+      "candidate_008": 2,
+      "candidate_009": 0,
+      "candidate_010": 0,
+      "candidate_011": 0,
+      "candidate_012": 1,
+      "candidate_013": 0,
+      "candidate_014": 0,
+      "candidate_015": 0,
+      "candidate_016": 0,
+      "candidate_017": 0,
+      "candidate_018": 0,
+      "candidate_019": 0,
+      "candidate_020": 0,
+      "candidate_021": 0,
+      "candidate_022": 0,
+      "candidate_023": 0,
+      "candidate_024": 0,
+      "candidate_025": 0,
+      "candidate_026": 0,
+      "candidate_027": 1,
+      "candidate_028": 0,
+      "candidate_029": 0,
+      "candidate_030": 1,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_006",
+      "candidate_007",
+      "candidate_008",
+      "candidate_001",
+      "candidate_012",
+      "candidate_027",
+      "candidate_030"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_002": [
+        "wrong_domain"
+      ],
+      "candidate_003": [
+        "wrong_domain"
+      ],
+      "candidate_004": [
+        "wrong_domain"
+      ],
+      "candidate_005": [
+        "wrong_domain"
+      ],
+      "candidate_006": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_007": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_008": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_009": [
+        "wrong_domain"
+      ],
+      "candidate_010": [
+        "wrong_domain"
+      ],
+      "candidate_011": [
+        "wrong_domain"
+      ],
+      "candidate_012": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_013": [
+        "wrong_domain"
+      ],
+      "candidate_014": [
+        "wrong_domain"
+      ],
+      "candidate_015": [
+        "wrong_domain"
+      ],
+      "candidate_016": [
+        "wrong_domain"
+      ],
+      "candidate_017": [
+        "wrong_domain"
+      ],
+      "candidate_018": [
+        "wrong_domain"
+      ],
+      "candidate_019": [
+        "wrong_domain"
+      ],
+      "candidate_020": [
+        "wrong_domain"
+      ],
+      "candidate_021": [
+        "wrong_domain"
+      ],
+      "candidate_022": [
+        "wrong_domain"
+      ],
+      "candidate_023": [
+        "wrong_domain"
+      ],
+      "candidate_024": [
+        "wrong_domain"
+      ],
+      "candidate_025": [
+        "wrong_domain"
+      ],
+      "candidate_026": [
+        "wrong_domain"
+      ],
+      "candidate_027": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_028": [
+        "wrong_domain"
+      ],
+      "candidate_029": [
+        "wrong_domain"
+      ],
+      "candidate_030": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  },
+  {
+    "job_id": "job_004",
+    "candidate_relevance": {
+      "candidate_001": 0,
+      "candidate_002": 0,
+      "candidate_003": 0,
+      "candidate_004": 0,
+      "candidate_005": 0,
+      "candidate_006": 1,
+      "candidate_007": 0,
+      "candidate_008": 0,
+      "candidate_009": 2,
+      "candidate_010": 2,
+      "candidate_011": 2,
+      "candidate_012": 0,
+      "candidate_013": 0,
+      "candidate_014": 0,
+      "candidate_015": 0,
+      "candidate_016": 0,
+      "candidate_017": 0,
+      "candidate_018": 0,
+      "candidate_019": 0,
+      "candidate_020": 0,
+      "candidate_021": 0,
+      "candidate_022": 0,
+      "candidate_023": 0,
+      "candidate_024": 0,
+      "candidate_025": 0,
+      "candidate_026": 0,
+      "candidate_027": 1,
+      "candidate_028": 0,
+      "candidate_029": 0,
+      "candidate_030": 1,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_009",
+      "candidate_010",
+      "candidate_011",
+      "candidate_006",
+      "candidate_027",
+      "candidate_030"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "wrong_domain"
+      ],
+      "candidate_002": [
+        "wrong_domain"
+      ],
+      "candidate_003": [
+        "wrong_domain"
+      ],
+      "candidate_004": [
+        "wrong_domain"
+      ],
+      "candidate_005": [
+        "wrong_domain"
+      ],
+      "candidate_006": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_007": [
+        "wrong_domain"
+      ],
+      "candidate_008": [
+        "wrong_domain"
+      ],
+      "candidate_009": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_010": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_011": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_012": [
+        "wrong_domain"
+      ],
+      "candidate_013": [
+        "wrong_domain"
+      ],
+      "candidate_014": [
+        "wrong_domain"
+      ],
+      "candidate_015": [
+        "wrong_domain"
+      ],
+      "candidate_016": [
+        "wrong_domain"
+      ],
+      "candidate_017": [
+        "wrong_domain"
+      ],
+      "candidate_018": [
+        "wrong_domain"
+      ],
+      "candidate_019": [
+        "wrong_domain"
+      ],
+      "candidate_020": [
+        "wrong_domain"
+      ],
+      "candidate_021": [
+        "wrong_domain"
+      ],
+      "candidate_022": [
+        "wrong_domain"
+      ],
+      "candidate_023": [
+        "wrong_domain"
+      ],
+      "candidate_024": [
+        "wrong_domain"
+      ],
+      "candidate_025": [
+        "wrong_domain"
+      ],
+      "candidate_026": [
+        "wrong_domain"
+      ],
+      "candidate_027": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_028": [
+        "wrong_domain"
+      ],
+      "candidate_029": [
+        "wrong_domain"
+      ],
+      "candidate_030": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  },
+  {
+    "job_id": "job_005",
+    "candidate_relevance": {
+      "candidate_001": 0,
+      "candidate_002": 0,
+      "candidate_003": 0,
+      "candidate_004": 0,
+      "candidate_005": 0,
+      "candidate_006": 1,
+      "candidate_007": 1,
+      "candidate_008": 0,
+      "candidate_009": 0,
+      "candidate_010": 0,
+      "candidate_011": 0,
+      "candidate_012": 2,
+      "candidate_013": 2,
+      "candidate_014": 2,
+      "candidate_015": 0,
+      "candidate_016": 0,
+      "candidate_017": 0,
+      "candidate_018": 0,
+      "candidate_019": 0,
+      "candidate_020": 0,
+      "candidate_021": 0,
+      "candidate_022": 0,
+      "candidate_023": 0,
+      "candidate_024": 0,
+      "candidate_025": 0,
+      "candidate_026": 0,
+      "candidate_027": 0,
+      "candidate_028": 0,
+      "candidate_029": 0,
+      "candidate_030": 1,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_012",
+      "candidate_013",
+      "candidate_014",
+      "candidate_006",
+      "candidate_007",
+      "candidate_030"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "wrong_domain"
+      ],
+      "candidate_002": [
+        "wrong_domain"
+      ],
+      "candidate_003": [
+        "wrong_domain"
+      ],
+      "candidate_004": [
+        "wrong_domain"
+      ],
+      "candidate_005": [
+        "wrong_domain"
+      ],
+      "candidate_006": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_007": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_008": [
+        "wrong_domain"
+      ],
+      "candidate_009": [
+        "wrong_domain"
+      ],
+      "candidate_010": [
+        "wrong_domain"
+      ],
+      "candidate_011": [
+        "wrong_domain"
+      ],
+      "candidate_012": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_013": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_014": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_015": [
+        "wrong_domain"
+      ],
+      "candidate_016": [
+        "wrong_domain"
+      ],
+      "candidate_017": [
+        "wrong_domain"
+      ],
+      "candidate_018": [
+        "wrong_domain"
+      ],
+      "candidate_019": [
+        "wrong_domain"
+      ],
+      "candidate_020": [
+        "wrong_domain"
+      ],
+      "candidate_021": [
+        "wrong_domain"
+      ],
+      "candidate_022": [
+        "wrong_domain"
+      ],
+      "candidate_023": [
+        "wrong_domain"
+      ],
+      "candidate_024": [
+        "wrong_domain"
+      ],
+      "candidate_025": [
+        "wrong_domain"
+      ],
+      "candidate_026": [
+        "wrong_domain"
+      ],
+      "candidate_027": [
+        "wrong_domain"
+      ],
+      "candidate_028": [
+        "wrong_domain"
+      ],
+      "candidate_029": [
+        "wrong_domain"
+      ],
+      "candidate_030": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  },
+  {
+    "job_id": "job_006",
+    "candidate_relevance": {
+      "candidate_001": 0,
+      "candidate_002": 1,
+      "candidate_003": 0,
+      "candidate_004": 0,
+      "candidate_005": 0,
+      "candidate_006": 0,
+      "candidate_007": 0,
+      "candidate_008": 0,
+      "candidate_009": 0,
+      "candidate_010": 0,
+      "candidate_011": 0,
+      "candidate_012": 0,
+      "candidate_013": 0,
+      "candidate_014": 0,
+      "candidate_015": 2,
+      "candidate_016": 2,
+      "candidate_017": 2,
+      "candidate_018": 0,
+      "candidate_019": 0,
+      "candidate_020": 0,
+      "candidate_021": 0,
+      "candidate_022": 0,
+      "candidate_023": 0,
+      "candidate_024": 1,
+      "candidate_025": 0,
+      "candidate_026": 0,
+      "candidate_027": 1,
+      "candidate_028": 0,
+      "candidate_029": 1,
+      "candidate_030": 0,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_015",
+      "candidate_016",
+      "candidate_017",
+      "candidate_002",
+      "candidate_024",
+      "candidate_027",
+      "candidate_029"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "wrong_domain"
+      ],
+      "candidate_002": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_003": [
+        "wrong_domain"
+      ],
+      "candidate_004": [
+        "wrong_domain"
+      ],
+      "candidate_005": [
+        "wrong_domain"
+      ],
+      "candidate_006": [
+        "wrong_domain"
+      ],
+      "candidate_007": [
+        "wrong_domain"
+      ],
+      "candidate_008": [
+        "wrong_domain"
+      ],
+      "candidate_009": [
+        "wrong_domain"
+      ],
+      "candidate_010": [
+        "wrong_domain"
+      ],
+      "candidate_011": [
+        "wrong_domain"
+      ],
+      "candidate_012": [
+        "wrong_domain"
+      ],
+      "candidate_013": [
+        "wrong_domain"
+      ],
+      "candidate_014": [
+        "wrong_domain"
+      ],
+      "candidate_015": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_016": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_017": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_018": [
+        "wrong_domain"
+      ],
+      "candidate_019": [
+        "wrong_domain"
+      ],
+      "candidate_020": [
+        "wrong_domain"
+      ],
+      "candidate_021": [
+        "wrong_domain"
+      ],
+      "candidate_022": [
+        "wrong_domain"
+      ],
+      "candidate_023": [
+        "wrong_domain"
+      ],
+      "candidate_024": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_025": [
+        "wrong_domain"
+      ],
+      "candidate_026": [
+        "wrong_domain"
+      ],
+      "candidate_027": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_028": [
+        "wrong_domain"
+      ],
+      "candidate_029": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_030": [
+        "wrong_domain"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  },
+  {
+    "job_id": "job_007",
+    "candidate_relevance": {
+      "candidate_001": 0,
+      "candidate_002": 0,
+      "candidate_003": 0,
+      "candidate_004": 0,
+      "candidate_005": 0,
+      "candidate_006": 0,
+      "candidate_007": 0,
+      "candidate_008": 0,
+      "candidate_009": 0,
+      "candidate_010": 0,
+      "candidate_011": 0,
+      "candidate_012": 0,
+      "candidate_013": 0,
+      "candidate_014": 0,
+      "candidate_015": 0,
+      "candidate_016": 0,
+      "candidate_017": 0,
+      "candidate_018": 2,
+      "candidate_019": 2,
+      "candidate_020": 2,
+      "candidate_021": 1,
+      "candidate_022": 0,
+      "candidate_023": 0,
+      "candidate_024": 1,
+      "candidate_025": 0,
+      "candidate_026": 1,
+      "candidate_027": 0,
+      "candidate_028": 0,
+      "candidate_029": 0,
+      "candidate_030": 0,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_018",
+      "candidate_019",
+      "candidate_020",
+      "candidate_021",
+      "candidate_024",
+      "candidate_026"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "wrong_domain"
+      ],
+      "candidate_002": [
+        "wrong_domain"
+      ],
+      "candidate_003": [
+        "wrong_domain"
+      ],
+      "candidate_004": [
+        "wrong_domain"
+      ],
+      "candidate_005": [
+        "wrong_domain"
+      ],
+      "candidate_006": [
+        "wrong_domain"
+      ],
+      "candidate_007": [
+        "wrong_domain"
+      ],
+      "candidate_008": [
+        "wrong_domain"
+      ],
+      "candidate_009": [
+        "wrong_domain"
+      ],
+      "candidate_010": [
+        "wrong_domain"
+      ],
+      "candidate_011": [
+        "wrong_domain"
+      ],
+      "candidate_012": [
+        "wrong_domain"
+      ],
+      "candidate_013": [
+        "wrong_domain"
+      ],
+      "candidate_014": [
+        "wrong_domain"
+      ],
+      "candidate_015": [
+        "wrong_domain"
+      ],
+      "candidate_016": [
+        "wrong_domain"
+      ],
+      "candidate_017": [
+        "wrong_domain"
+      ],
+      "candidate_018": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_019": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_020": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_021": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_022": [
+        "wrong_domain"
+      ],
+      "candidate_023": [
+        "wrong_domain"
+      ],
+      "candidate_024": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_025": [
+        "wrong_domain"
+      ],
+      "candidate_026": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_027": [
+        "wrong_domain"
+      ],
+      "candidate_028": [
+        "wrong_domain"
+      ],
+      "candidate_029": [
+        "wrong_domain"
+      ],
+      "candidate_030": [
+        "wrong_domain"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  },
+  {
+    "job_id": "job_008",
+    "candidate_relevance": {
+      "candidate_001": 0,
+      "candidate_002": 0,
+      "candidate_003": 0,
+      "candidate_004": 0,
+      "candidate_005": 0,
+      "candidate_006": 0,
+      "candidate_007": 0,
+      "candidate_008": 0,
+      "candidate_009": 0,
+      "candidate_010": 0,
+      "candidate_011": 0,
+      "candidate_012": 0,
+      "candidate_013": 0,
+      "candidate_014": 0,
+      "candidate_015": 0,
+      "candidate_016": 0,
+      "candidate_017": 0,
+      "candidate_018": 1,
+      "candidate_019": 1,
+      "candidate_020": 0,
+      "candidate_021": 2,
+      "candidate_022": 2,
+      "candidate_023": 2,
+      "candidate_024": 1,
+      "candidate_025": 0,
+      "candidate_026": 1,
+      "candidate_027": 0,
+      "candidate_028": 0,
+      "candidate_029": 0,
+      "candidate_030": 0,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_021",
+      "candidate_022",
+      "candidate_023",
+      "candidate_018",
+      "candidate_019",
+      "candidate_024",
+      "candidate_026"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "wrong_domain"
+      ],
+      "candidate_002": [
+        "wrong_domain"
+      ],
+      "candidate_003": [
+        "wrong_domain"
+      ],
+      "candidate_004": [
+        "wrong_domain"
+      ],
+      "candidate_005": [
+        "wrong_domain"
+      ],
+      "candidate_006": [
+        "wrong_domain"
+      ],
+      "candidate_007": [
+        "wrong_domain"
+      ],
+      "candidate_008": [
+        "wrong_domain"
+      ],
+      "candidate_009": [
+        "wrong_domain"
+      ],
+      "candidate_010": [
+        "wrong_domain"
+      ],
+      "candidate_011": [
+        "wrong_domain"
+      ],
+      "candidate_012": [
+        "wrong_domain"
+      ],
+      "candidate_013": [
+        "wrong_domain"
+      ],
+      "candidate_014": [
+        "wrong_domain"
+      ],
+      "candidate_015": [
+        "wrong_domain"
+      ],
+      "candidate_016": [
+        "wrong_domain"
+      ],
+      "candidate_017": [
+        "wrong_domain"
+      ],
+      "candidate_018": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_019": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_020": [
+        "wrong_domain"
+      ],
+      "candidate_021": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_022": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_023": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_024": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_025": [
+        "wrong_domain"
+      ],
+      "candidate_026": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_027": [
+        "wrong_domain"
+      ],
+      "candidate_028": [
+        "wrong_domain"
+      ],
+      "candidate_029": [
+        "wrong_domain"
+      ],
+      "candidate_030": [
+        "wrong_domain"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  },
+  {
+    "job_id": "job_009",
+    "candidate_relevance": {
+      "candidate_001": 1,
+      "candidate_002": 0,
+      "candidate_003": 0,
+      "candidate_004": 0,
+      "candidate_005": 0,
+      "candidate_006": 0,
+      "candidate_007": 0,
+      "candidate_008": 0,
+      "candidate_009": 0,
+      "candidate_010": 0,
+      "candidate_011": 0,
+      "candidate_012": 0,
+      "candidate_013": 0,
+      "candidate_014": 0,
+      "candidate_015": 0,
+      "candidate_016": 0,
+      "candidate_017": 0,
+      "candidate_018": 1,
+      "candidate_019": 0,
+      "candidate_020": 0,
+      "candidate_021": 1,
+      "candidate_022": 0,
+      "candidate_023": 0,
+      "candidate_024": 2,
+      "candidate_025": 2,
+      "candidate_026": 2,
+      "candidate_027": 0,
+      "candidate_028": 0,
+      "candidate_029": 0,
+      "candidate_030": 0,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_024",
+      "candidate_025",
+      "candidate_026",
+      "candidate_001",
+      "candidate_018",
+      "candidate_021"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_002": [
+        "wrong_domain"
+      ],
+      "candidate_003": [
+        "wrong_domain"
+      ],
+      "candidate_004": [
+        "wrong_domain"
+      ],
+      "candidate_005": [
+        "wrong_domain"
+      ],
+      "candidate_006": [
+        "wrong_domain"
+      ],
+      "candidate_007": [
+        "wrong_domain"
+      ],
+      "candidate_008": [
+        "wrong_domain"
+      ],
+      "candidate_009": [
+        "wrong_domain"
+      ],
+      "candidate_010": [
+        "wrong_domain"
+      ],
+      "candidate_011": [
+        "wrong_domain"
+      ],
+      "candidate_012": [
+        "wrong_domain"
+      ],
+      "candidate_013": [
+        "wrong_domain"
+      ],
+      "candidate_014": [
+        "wrong_domain"
+      ],
+      "candidate_015": [
+        "wrong_domain"
+      ],
+      "candidate_016": [
+        "wrong_domain"
+      ],
+      "candidate_017": [
+        "wrong_domain"
+      ],
+      "candidate_018": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_019": [
+        "wrong_domain"
+      ],
+      "candidate_020": [
+        "wrong_domain"
+      ],
+      "candidate_021": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_022": [
+        "wrong_domain"
+      ],
+      "candidate_023": [
+        "wrong_domain"
+      ],
+      "candidate_024": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_025": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_026": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_027": [
+        "wrong_domain"
+      ],
+      "candidate_028": [
+        "wrong_domain"
+      ],
+      "candidate_029": [
+        "wrong_domain"
+      ],
+      "candidate_030": [
+        "wrong_domain"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  },
+  {
+    "job_id": "job_010",
+    "candidate_relevance": {
+      "candidate_001": 0,
+      "candidate_002": 0,
+      "candidate_003": 0,
+      "candidate_004": 0,
+      "candidate_005": 0,
+      "candidate_006": 1,
+      "candidate_007": 0,
+      "candidate_008": 0,
+      "candidate_009": 1,
+      "candidate_010": 0,
+      "candidate_011": 0,
+      "candidate_012": 0,
+      "candidate_013": 0,
+      "candidate_014": 0,
+      "candidate_015": 1,
+      "candidate_016": 0,
+      "candidate_017": 0,
+      "candidate_018": 0,
+      "candidate_019": 0,
+      "candidate_020": 0,
+      "candidate_021": 0,
+      "candidate_022": 0,
+      "candidate_023": 0,
+      "candidate_024": 0,
+      "candidate_025": 0,
+      "candidate_026": 0,
+      "candidate_027": 2,
+      "candidate_028": 2,
+      "candidate_029": 2,
+      "candidate_030": 1,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_027",
+      "candidate_028",
+      "candidate_029",
+      "candidate_006",
+      "candidate_009",
+      "candidate_015",
+      "candidate_030"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "wrong_domain"
+      ],
+      "candidate_002": [
+        "wrong_domain"
+      ],
+      "candidate_003": [
+        "wrong_domain"
+      ],
+      "candidate_004": [
+        "wrong_domain"
+      ],
+      "candidate_005": [
+        "wrong_domain"
+      ],
+      "candidate_006": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_007": [
+        "wrong_domain"
+      ],
+      "candidate_008": [
+        "wrong_domain"
+      ],
+      "candidate_009": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_010": [
+        "wrong_domain"
+      ],
+      "candidate_011": [
+        "wrong_domain"
+      ],
+      "candidate_012": [
+        "wrong_domain"
+      ],
+      "candidate_013": [
+        "wrong_domain"
+      ],
+      "candidate_014": [
+        "wrong_domain"
+      ],
+      "candidate_015": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_016": [
+        "wrong_domain"
+      ],
+      "candidate_017": [
+        "wrong_domain"
+      ],
+      "candidate_018": [
+        "wrong_domain"
+      ],
+      "candidate_019": [
+        "wrong_domain"
+      ],
+      "candidate_020": [
+        "wrong_domain"
+      ],
+      "candidate_021": [
+        "wrong_domain"
+      ],
+      "candidate_022": [
+        "wrong_domain"
+      ],
+      "candidate_023": [
+        "wrong_domain"
+      ],
+      "candidate_024": [
+        "wrong_domain"
+      ],
+      "candidate_025": [
+        "wrong_domain"
+      ],
+      "candidate_026": [
+        "wrong_domain"
+      ],
+      "candidate_027": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_028": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_029": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_030": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  },
+  {
+    "job_id": "job_011",
+    "candidate_relevance": {
+      "candidate_001": 0,
+      "candidate_002": 0,
+      "candidate_003": 0,
+      "candidate_004": 0,
+      "candidate_005": 0,
+      "candidate_006": 1,
+      "candidate_007": 2,
+      "candidate_008": 1,
+      "candidate_009": 0,
+      "candidate_010": 0,
+      "candidate_011": 2,
+      "candidate_012": 1,
+      "candidate_013": 0,
+      "candidate_014": 0,
+      "candidate_015": 0,
+      "candidate_016": 0,
+      "candidate_017": 0,
+      "candidate_018": 0,
+      "candidate_019": 0,
+      "candidate_020": 0,
+      "candidate_021": 0,
+      "candidate_022": 0,
+      "candidate_023": 0,
+      "candidate_024": 0,
+      "candidate_025": 0,
+      "candidate_026": 0,
+      "candidate_027": 1,
+      "candidate_028": 0,
+      "candidate_029": 0,
+      "candidate_030": 2,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_007",
+      "candidate_011",
+      "candidate_030",
+      "candidate_006",
+      "candidate_008",
+      "candidate_012",
+      "candidate_027"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "wrong_domain"
+      ],
+      "candidate_002": [
+        "wrong_domain"
+      ],
+      "candidate_003": [
+        "wrong_domain"
+      ],
+      "candidate_004": [
+        "wrong_domain"
+      ],
+      "candidate_005": [
+        "wrong_domain"
+      ],
+      "candidate_006": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_007": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_008": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_009": [
+        "wrong_domain"
+      ],
+      "candidate_010": [
+        "wrong_domain"
+      ],
+      "candidate_011": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_012": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_013": [
+        "wrong_domain"
+      ],
+      "candidate_014": [
+        "wrong_domain"
+      ],
+      "candidate_015": [
+        "wrong_domain"
+      ],
+      "candidate_016": [
+        "wrong_domain"
+      ],
+      "candidate_017": [
+        "wrong_domain"
+      ],
+      "candidate_018": [
+        "wrong_domain"
+      ],
+      "candidate_019": [
+        "wrong_domain"
+      ],
+      "candidate_020": [
+        "wrong_domain"
+      ],
+      "candidate_021": [
+        "wrong_domain"
+      ],
+      "candidate_022": [
+        "wrong_domain"
+      ],
+      "candidate_023": [
+        "wrong_domain"
+      ],
+      "candidate_024": [
+        "wrong_domain"
+      ],
+      "candidate_025": [
+        "wrong_domain"
+      ],
+      "candidate_026": [
+        "wrong_domain"
+      ],
+      "candidate_027": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_028": [
+        "wrong_domain"
+      ],
+      "candidate_029": [
+        "wrong_domain"
+      ],
+      "candidate_030": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  },
+  {
+    "job_id": "job_012",
+    "candidate_relevance": {
+      "candidate_001": 0,
+      "candidate_002": 0,
+      "candidate_003": 0,
+      "candidate_004": 0,
+      "candidate_005": 0,
+      "candidate_006": 1,
+      "candidate_007": 1,
+      "candidate_008": 2,
+      "candidate_009": 0,
+      "candidate_010": 0,
+      "candidate_011": 1,
+      "candidate_012": 0,
+      "candidate_013": 0,
+      "candidate_014": 0,
+      "candidate_015": 0,
+      "candidate_016": 0,
+      "candidate_017": 0,
+      "candidate_018": 0,
+      "candidate_019": 0,
+      "candidate_020": 0,
+      "candidate_021": 0,
+      "candidate_022": 0,
+      "candidate_023": 0,
+      "candidate_024": 0,
+      "candidate_025": 0,
+      "candidate_026": 0,
+      "candidate_027": 0,
+      "candidate_028": 0,
+      "candidate_029": 2,
+      "candidate_030": 2,
+      "candidate_031": 0,
+      "candidate_032": 0,
+      "candidate_033": 0,
+      "candidate_034": 0,
+      "candidate_035": 0,
+      "candidate_036": 0,
+      "candidate_037": 0,
+      "candidate_038": 0,
+      "candidate_039": 0,
+      "candidate_040": 0
+    },
+    "ideal_ranking": [
+      "candidate_008",
+      "candidate_029",
+      "candidate_030",
+      "candidate_006",
+      "candidate_007",
+      "candidate_011"
+    ],
+    "label_reason_codes": {
+      "candidate_001": [
+        "wrong_domain"
+      ],
+      "candidate_002": [
+        "wrong_domain"
+      ],
+      "candidate_003": [
+        "wrong_domain"
+      ],
+      "candidate_004": [
+        "wrong_domain"
+      ],
+      "candidate_005": [
+        "wrong_domain"
+      ],
+      "candidate_006": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_007": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_008": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_009": [
+        "wrong_domain"
+      ],
+      "candidate_010": [
+        "wrong_domain"
+      ],
+      "candidate_011": [
+        "skill_match",
+        "insufficient_project_evidence"
+      ],
+      "candidate_012": [
+        "wrong_domain"
+      ],
+      "candidate_013": [
+        "wrong_domain"
+      ],
+      "candidate_014": [
+        "wrong_domain"
+      ],
+      "candidate_015": [
+        "wrong_domain"
+      ],
+      "candidate_016": [
+        "wrong_domain"
+      ],
+      "candidate_017": [
+        "wrong_domain"
+      ],
+      "candidate_018": [
+        "wrong_domain"
+      ],
+      "candidate_019": [
+        "wrong_domain"
+      ],
+      "candidate_020": [
+        "wrong_domain"
+      ],
+      "candidate_021": [
+        "wrong_domain"
+      ],
+      "candidate_022": [
+        "wrong_domain"
+      ],
+      "candidate_023": [
+        "wrong_domain"
+      ],
+      "candidate_024": [
+        "wrong_domain"
+      ],
+      "candidate_025": [
+        "wrong_domain"
+      ],
+      "candidate_026": [
+        "wrong_domain"
+      ],
+      "candidate_027": [
+        "wrong_domain"
+      ],
+      "candidate_028": [
+        "wrong_domain"
+      ],
+      "candidate_029": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_030": [
+        "skill_match",
+        "project_match",
+        "experience_match"
+      ],
+      "candidate_031": [
+        "jd_as_resume"
+      ],
+      "candidate_032": [
+        "prompt_injection"
+      ],
+      "candidate_033": [
+        "keyword_stuffing"
+      ],
+      "candidate_034": [
+        "duplicate_resume"
+      ],
+      "candidate_035": [
+        "missing_name"
+      ],
+      "candidate_036": [
+        "missing_education"
+      ],
+      "candidate_037": [
+        "oversized_noisy_resume"
+      ],
+      "candidate_038": [
+        "filename_injection"
+      ],
+      "candidate_039": [
+        "missing_identity"
+      ],
+      "candidate_040": [
+        "non_technical_keyword_camouflage"
+      ]
+    }
+  }
+]

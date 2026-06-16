@@ -1,0 +1,20 @@
+{
+  "dataset_name": "recruitment_eval_v1",
+  "dataset_version": "1.0.0",
+  "created_for": "Phase13A Recruitment Evaluation Dataset v1",
+  "language": "zh-CN",
+  "job_count": 12,
+  "candidate_count": 40,
+  "special_case_count": 10,
+  "relevance_levels": [
+    0,
+    1,
+    2
+  ],
+  "candidate_id_scheme": "candidate_###",
+  "privacy_mode": "synthetic_anonymized",
+  "synthetic_data": true,
+  "index_directory": "evaluation_indexes/recruitment_eval_v1_chroma",
+  "baseline_version": "phase11b-v1",
+  "summary": "Synthetic Chinese technical recruitment evaluation dataset with relevance labels and attack cases."
+}

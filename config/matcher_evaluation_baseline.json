@@ -1,0 +1,16 @@
+{
+  "experiment_version": "phase13c-v1",
+  "dataset_version": "1.0.0",
+  "retrieval_baseline_version": "phase13b-v1",
+  "matcher": "MatcherAgent",
+  "input_modes": [
+    "full_resume",
+    "candidate_profile_preview",
+    "retriever_top_k_preview"
+  ],
+  "retriever_query_mode": "raw_jd",
+  "retriever_top_k": 10,
+  "memory_enabled": false,
+  "mcp_enabled": false,
+  "summary_only": true
+}

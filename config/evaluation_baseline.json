@@ -1,0 +1,12 @@
+{
+  "baseline_version": "phase11b-v1",
+  "legacy_runner": "legacy_default_graph",
+  "skill_runner": "production_skill_graph",
+  "embedding_model": "BAAI/bge-small-zh-v1.5",
+  "top_k": 5,
+  "planner_fallback_allowed": true,
+  "memory_enabled": false,
+  "mcp_enabled": false,
+  "candidate_preview_version": "phase10a",
+  "summary_only": true
+}

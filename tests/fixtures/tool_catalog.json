@@ -1,0 +1,50 @@
+{
+  "manifests": [
+    {
+      "name": "echo_tool",
+      "version": "v1",
+      "description": "Return local fake input unchanged.",
+      "input_schema": {"type": "object"},
+      "output_schema": {"type": "object"},
+      "category": "demo",
+      "permissions_required": [],
+      "side_effects": "none",
+      "timeout_seconds": 1,
+      "sandbox_requirements": {},
+      "approval_required": false,
+      "implementation_type": "fake",
+      "implementation_ref": "echo_tool",
+      "metadata": {"fixture": true}
+    },
+    {
+      "name": "candidate_lookup_fake",
+      "version": "v1",
+      "description": "Return deterministic fake candidate records.",
+      "input_schema": {"type": "object"},
+      "output_schema": {"type": "object"},
+      "category": "candidate",
+      "permissions_required": ["candidate:read"],
+      "side_effects": "read",
+      "sandbox_requirements": {},
+      "approval_required": false,
+      "implementation_type": "fake",
+      "implementation_ref": "candidate_lookup_fake",
+      "metadata": {"fixture": true}
+    },
+    {
+      "name": "resume_text_parse_fake",
+      "version": "v1",
+      "description": "Parse local fake resume text deterministically.",
+      "input_schema": {"type": "object"},
+      "output_schema": {"type": "object"},
+      "category": "document",
+      "permissions_required": [],
+      "side_effects": "none",
+      "sandbox_requirements": {},
+      "approval_required": false,
+      "implementation_type": "fake",
+      "implementation_ref": "resume_text_parse_fake",
+      "metadata": {"fixture": true}
+    }
+  ]
+}

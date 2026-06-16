@@ -1,0 +1,586 @@
+[
+  {
+    "case_id": "case_a_single_candidate_single_chunk",
+    "raw_jd": "招聘 Python RAG LangGraph 工程师",
+    "retrieval_chunks": [
+      {
+        "text": "张三本科计算机，参与 RAG Agent 检索匹配平台项目，使用 Python LangGraph FastAPI Docker 部署自动化评估系统，有工程实践和测试经验。该段用于评估截断与关键词抽取，文本长度超过安全摘要限制。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "candidate_id": "cand-a",
+          "candidate_name": "张三",
+          "document_id": "doc-a",
+          "file_name": "zhangsan.pdf"
+        },
+        "score": 0.91
+      }
+    ],
+    "expected_profiles": [
+      {
+        "expected_candidate_id": "cand-a",
+        "expected_candidate_name": "张三",
+        "expected_source_document_id": "doc-a",
+        "expected_skills": [
+          "Python",
+          "RAG",
+          "LangGraph",
+          "FastAPI",
+          "Docker"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "平台",
+          "Agent",
+          "RAG",
+          "检索",
+          "匹配",
+          "自动化",
+          "评估"
+        ],
+        "expected_education_keywords": [
+          "本科",
+          "计算机"
+        ],
+        "expected_experience_keywords": [
+          "工程",
+          "测试"
+        ],
+        "expected_matched_query_terms": [
+          "Python",
+          "RAG",
+          "LangGraph"
+        ],
+        "expected_quality_flags": [
+          "low_evidence_chunk_count",
+          "summary_truncated"
+        ],
+        "forbidden_quality_flags": [
+          "candidate_name_missing",
+          "skills_missing",
+          "source_document_missing"
+        ]
+      }
+    ],
+    "tags": [
+      "single",
+      "metadata"
+    ]
+  },
+  {
+    "case_id": "case_b_single_candidate_multi_chunk",
+    "raw_jd": "招聘 Python RAG 检索工程师",
+    "retrieval_chunks": [
+      {
+        "text": "李四本科软件，负责 RAG 检索系统项目，使用 Python Chroma 构建检索平台，支持自动化评估和部署。该 chunk 较长用于避免完整文本泄露。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "document_id": "doc-b",
+          "candidate_name": "李四",
+          "file_name": "lisi.pdf"
+        }
+      },
+      {
+        "text": "李四在实习期间参与 FastAPI 微服务平台和 Docker 部署测试，具备工程经验。该 chunk 与前一段共享 document_id，应聚合为一个 preview。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "document_id": "doc-b",
+          "candidate_name": "李四",
+          "file_name": "lisi.pdf"
+        }
+      }
+    ],
+    "expected_profiles": [
+      {
+        "expected_candidate_name": "李四",
+        "expected_source_document_id": "doc-b",
+        "expected_skills": [
+          "Python",
+          "RAG",
+          "Chroma",
+          "FastAPI",
+          "Docker"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "系统",
+          "平台",
+          "RAG",
+          "检索",
+          "自动化",
+          "评估",
+          "部署"
+        ],
+        "expected_education_keywords": [
+          "本科",
+          "软件"
+        ],
+        "expected_experience_keywords": [
+          "实习",
+          "部署",
+          "测试",
+          "工程"
+        ],
+        "expected_matched_query_terms": [
+          "Python",
+          "RAG",
+          "检索"
+        ],
+        "forbidden_quality_flags": [
+          "low_evidence_chunk_count",
+          "candidate_name_missing"
+        ]
+      }
+    ],
+    "tags": [
+      "multi_chunk"
+    ]
+  },
+  {
+    "case_id": "case_c_two_candidates",
+    "raw_jd": "招聘 Python RAG 工程师",
+    "retrieval_chunks": [
+      {
+        "text": "王五本科计算机，做过 Python RAG 推荐检索系统项目，负责部署和测试，文本足够长用于 summary-only preview。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "candidate_id": "cand-c1",
+          "candidate_name": "王五",
+          "file_name": "wangwu.pdf"
+        }
+      },
+      {
+        "text": "赵六硕士人工智能，做过 LangGraph Agent 匹配平台和自动化评估项目，使用 Python Docker，有工程经验。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "candidate_id": "cand-c2",
+          "candidate_name": "赵六",
+          "file_name": "zhaoliu.pdf"
+        }
+      }
+    ],
+    "expected_profiles": [
+      {
+        "expected_candidate_id": "cand-c1",
+        "expected_candidate_name": "王五",
+        "expected_source_document_id": "wangwu.pdf",
+        "expected_skills": [
+          "Python",
+          "RAG"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "系统",
+          "推荐",
+          "检索",
+          "部署"
+        ],
+        "expected_education_keywords": [
+          "本科",
+          "计算机"
+        ],
+        "expected_experience_keywords": [
+          "测试"
+        ],
+        "expected_matched_query_terms": [
+          "Python",
+          "RAG"
+        ]
+      },
+      {
+        "expected_candidate_id": "cand-c2",
+        "expected_candidate_name": "赵六",
+        "expected_source_document_id": "zhaoliu.pdf",
+        "expected_skills": [
+          "Python",
+          "LangGraph",
+          "Agent",
+          "Docker"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "平台",
+          "Agent",
+          "匹配",
+          "自动化",
+          "评估"
+        ],
+        "expected_education_keywords": [
+          "硕士",
+          "人工智能"
+        ],
+        "expected_experience_keywords": [
+          "工程"
+        ],
+        "expected_matched_query_terms": [
+          "Python"
+        ]
+      }
+    ],
+    "tags": [
+      "multi_candidate"
+    ]
+  },
+  {
+    "case_id": "case_d_missing_candidate_id_stable_preview",
+    "raw_jd": "招聘 FastAPI RAG 工程师",
+    "retrieval_chunks": [
+      {
+        "text": "缺少 candidate_id 的候选人，本科软件，参与 FastAPI RAG 检索平台项目，使用 Python 部署和测试。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "document_id": "doc-d",
+          "candidate_name": "孙七",
+          "file_name": "sunqi.pdf"
+        }
+      }
+    ],
+    "expected_profiles": [
+      {
+        "expected_candidate_name": "孙七",
+        "expected_source_document_id": "doc-d",
+        "expected_skills": [
+          "Python",
+          "RAG",
+          "FastAPI"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "平台",
+          "RAG",
+          "检索",
+          "部署"
+        ],
+        "expected_education_keywords": [
+          "本科",
+          "软件"
+        ],
+        "expected_experience_keywords": [
+          "测试"
+        ],
+        "expected_matched_query_terms": [
+          "FastAPI",
+          "RAG"
+        ]
+      }
+    ],
+    "tags": [
+      "fallback_id"
+    ]
+  },
+  {
+    "case_id": "case_e_name_from_file_name",
+    "raw_jd": "招聘 Python 工程师",
+    "retrieval_chunks": [
+      {
+        "text": "张三参与 Python 自动化测试平台项目，本科计算机，负责部署和工程实践，文本足够长用于安全摘要。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "document_id": "doc-e",
+          "file_name": "张三_简历.pdf"
+        }
+      }
+    ],
+    "expected_profiles": [
+      {
+        "expected_candidate_name": "张三",
+        "expected_source_document_id": "doc-e",
+        "expected_skills": [
+          "Python"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "平台",
+          "自动化",
+          "部署"
+        ],
+        "expected_education_keywords": [
+          "本科",
+          "计算机"
+        ],
+        "expected_experience_keywords": [
+          "测试",
+          "工程"
+        ],
+        "expected_matched_query_terms": [
+          "Python"
+        ],
+        "forbidden_quality_flags": [
+          "candidate_name_missing"
+        ]
+      }
+    ],
+    "tags": [
+      "file_name_name"
+    ]
+  },
+  {
+    "case_id": "case_f_name_missing",
+    "raw_jd": "招聘 Python RAG 工程师",
+    "retrieval_chunks": [
+      {
+        "text": "匿名候选人参与 Python RAG 检索系统项目，本科信息专业，负责部署测试和工程实践，文本足够长。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "document_id": "doc-f"
+        }
+      }
+    ],
+    "expected_profiles": [
+      {
+        "expected_source_document_id": "doc-f",
+        "expected_skills": [
+          "Python",
+          "RAG"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "系统",
+          "检索",
+          "部署"
+        ],
+        "expected_education_keywords": [
+          "本科",
+          "信息"
+        ],
+        "expected_experience_keywords": [
+          "测试",
+          "工程"
+        ],
+        "expected_matched_query_terms": [
+          "Python",
+          "RAG"
+        ],
+        "expected_quality_flags": [
+          "candidate_name_missing"
+        ]
+      }
+    ],
+    "tags": [
+      "missing_name"
+    ]
+  },
+  {
+    "case_id": "case_g_skill_whitelist",
+    "raw_jd": "招聘 Python RAG LangGraph FastAPI 工程师",
+    "retrieval_chunks": [
+      {
+        "text": "候选人使用 Python RAG LangGraph FastAPI SecretSkill 构建 Agent 检索平台项目，本科软件，负责测试部署工程。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "candidate_id": "cand-g",
+          "candidate_name": "周八",
+          "file_name": "zhoub.pdf"
+        }
+      }
+    ],
+    "expected_profiles": [
+      {
+        "expected_candidate_id": "cand-g",
+        "expected_candidate_name": "周八",
+        "expected_source_document_id": "zhoub.pdf",
+        "expected_skills": [
+          "Python",
+          "RAG",
+          "LangGraph",
+          "FastAPI",
+          "Agent"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "平台",
+          "Agent",
+          "检索",
+          "部署"
+        ],
+        "expected_education_keywords": [
+          "本科",
+          "软件"
+        ],
+        "expected_experience_keywords": [
+          "测试",
+          "工程"
+        ],
+        "expected_matched_query_terms": [
+          "Python",
+          "RAG",
+          "LangGraph",
+          "FastAPI"
+        ]
+      }
+    ],
+    "tags": [
+      "skill_whitelist"
+    ]
+  },
+  {
+    "case_id": "case_h_privacy_truncation",
+    "raw_jd": "招聘 Python RAG 工程师",
+    "retrieval_chunks": [
+      {
+        "text": "隐私测试文本 PRIVATE PHONE [REDACTED_PHONE]。候选人本科计算机，参与 Python RAG 检索系统项目，负责自动化评估、部署、测试和工程实践。该文本刻意较长，用于验证 evidence_summary 截断且不保存完整 chunk。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "candidate_id": "cand-h",
+          "candidate_name": "隐私候选人",
+          "file_name": "privacy.pdf"
+        }
+      }
+    ],
+    "build_config": {
+      "max_evidence_chars": 70
+    },
+    "expected_profiles": [
+      {
+        "expected_candidate_id": "cand-h",
+        "expected_candidate_name": "隐私候选人",
+        "expected_source_document_id": "privacy.pdf",
+        "expected_skills": [
+          "Python",
+          "RAG"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "系统",
+          "检索",
+          "自动化",
+          "评估",
+          "部署"
+        ],
+        "expected_education_keywords": [
+          "本科",
+          "计算机"
+        ],
+        "expected_experience_keywords": [
+          "测试",
+          "工程"
+        ],
+        "expected_matched_query_terms": [
+          "Python",
+          "RAG"
+        ],
+        "expected_quality_flags": [
+          "summary_truncated"
+        ]
+      }
+    ],
+    "tags": [
+      "privacy"
+    ]
+  },
+  {
+    "case_id": "case_i_grouping_candidate_id_priority",
+    "raw_jd": "招聘 Python RAG 工程师",
+    "retrieval_chunks": [
+      {
+        "text": "候选人 A 使用 Python RAG 构建检索系统项目，本科计算机，负责部署测试工程。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "candidate_id": "cand-i1",
+          "candidate_name": "候选人A",
+          "file_name": "same_resume.pdf"
+        }
+      },
+      {
+        "text": "候选人 B 使用 LangGraph Agent 构建匹配平台项目，硕士人工智能，负责自动化评估部署。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "candidate_id": "cand-i2",
+          "candidate_name": "候选人B",
+          "file_name": "same_resume.pdf"
+        }
+      }
+    ],
+    "expected_profiles": [
+      {
+        "expected_candidate_id": "cand-i1",
+        "expected_candidate_name": "候选人A",
+        "expected_source_document_id": "same_resume.pdf",
+        "expected_skills": [
+          "Python",
+          "RAG"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "系统",
+          "检索",
+          "部署"
+        ],
+        "expected_education_keywords": [
+          "本科",
+          "计算机"
+        ],
+        "expected_experience_keywords": [
+          "测试",
+          "工程"
+        ],
+        "expected_matched_query_terms": [
+          "Python",
+          "RAG"
+        ]
+      },
+      {
+        "expected_candidate_id": "cand-i2",
+        "expected_candidate_name": "候选人B",
+        "expected_source_document_id": "same_resume.pdf",
+        "expected_skills": [
+          "LangGraph",
+          "Agent"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "平台",
+          "Agent",
+          "匹配",
+          "自动化",
+          "评估",
+          "部署"
+        ],
+        "expected_education_keywords": [
+          "硕士",
+          "人工智能"
+        ],
+        "expected_experience_keywords": [],
+        "expected_matched_query_terms": []
+      }
+    ],
+    "tags": [
+      "grouping_risk"
+    ]
+  },
+  {
+    "case_id": "case_j_matcher_compatibility",
+    "raw_jd": "招聘 Docker FastAPI Python 工程师",
+    "retrieval_chunks": [
+      {
+        "text": "匹配兼容候选人本科软件，参与 FastAPI 微服务平台项目，使用 Python Docker 部署测试工程。 这是用于安全截断的补充描述，包含若干普通说明文字，确保文本长度超过摘要限制，不包含额外技术名称。",
+        "metadata": {
+          "candidate_id": "cand-j",
+          "candidate_name": "兼容候选人",
+          "file_name": "matcher.pdf"
+        }
+      }
+    ],
+    "expected_profiles": [
+      {
+        "expected_candidate_id": "cand-j",
+        "expected_candidate_name": "兼容候选人",
+        "expected_source_document_id": "matcher.pdf",
+        "expected_skills": [
+          "Python",
+          "Docker",
+          "FastAPI"
+        ],
+        "expected_project_keywords": [
+          "项目",
+          "平台",
+          "部署",
+          "微服务"
+        ],
+        "expected_education_keywords": [
+          "本科",
+          "软件"
+        ],
+        "expected_experience_keywords": [
+          "测试",
+          "工程"
+        ],
+        "expected_matched_query_terms": [
+          "Docker",
+          "FastAPI",
+          "Python"
+        ]
+      }
+    ],
+    "tags": [
+      "matcher"
+    ]
+  }
+]

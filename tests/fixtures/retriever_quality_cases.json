@@ -1,0 +1,13 @@
+[
+  {
+    "case_id": "python_rag_agent",
+    "query": "Python RAG LangGraph AI Agent",
+    "top_k": 3,
+    "expected_candidate_id": null,
+    "expected_source_contains": null,
+    "tags": ["smoke", "agent"],
+    "metadata": {
+      "fixture_type": "summary_only_retriever_quality"
+    }
+  }
+]

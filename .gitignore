@@ -1,0 +1,76 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cert
+*.secret
+
+# Private candidate data and local uploads
+/data/
+/resumes/
+/uploads/
+/chroma_db/
+/storage/
+/logs/
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+
+# Generated evaluation/index artifacts
+/evaluation_indexes/
+/evaluation_results/
+
+# Model and package caches
+/.cache/
+/models/
+/hf_cache/
+.huggingface/
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.conda/
+
+# Internal phase and interview packaging notes
+PHASE*_ANALYSIS.md
+PHASE*_RESULT.md
+PHASE*_SUMMARY.md
+AGENT_UPGRADE_HANDOFF.md
+PROJECT_UPGRADE_SUMMARY.md
+PROJECT_PACKAGING_RESULT.md
+INTERVIEW_PROJECT_EXPLANATION.md
+INTERVIEW_RECRUIT_GRAPH_CODE_SUMMARY.md
+RESUME_BULLETS.md
+DEMO_COMMANDS.md
+ARCHITECTURE_NOTES.md
+architecture_analysis.md
+evolution_plan.md
+plan.md
+
+# IDE / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Build outputs
+build/
+dist/
+*.egg-info/
+
+# Synthetic rendered resume text exports are reproducible from candidates.json
+/evaluation_data/v1/resumes/

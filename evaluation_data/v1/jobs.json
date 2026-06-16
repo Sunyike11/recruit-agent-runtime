@@ -1,0 +1,458 @@
+[
+  {
+    "job_id": "job_001",
+    "title": "AI Agent / LLM 应用工程师",
+    "level": "中高级",
+    "department": "Agent平台组",
+    "required_skills": [
+      "Python",
+      "LLM",
+      "RAG",
+      "LangGraph",
+      "Tool Use"
+    ],
+    "preferred_skills": [
+      "MCP",
+      "FastAPI"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "2年以上相关项目经验，优秀应届研究生可放宽",
+    "responsibilities": [
+      "负责AI Agent / LLM 应用工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉Python与LLM",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有MCP经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：AI Agent / LLM 应用工程师。部门：Agent平台组。要求掌握Python, LLM, RAG, LangGraph, Tool Use，加分项包括MCP, FastAPI。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_001",
+      "AI",
+      "Agent平台组"
+    ]
+  },
+  {
+    "job_id": "job_002",
+    "title": "RAG 工程师",
+    "level": "中级",
+    "department": "知识检索组",
+    "required_skills": [
+      "Python",
+      "RAG",
+      "LlamaIndex",
+      "Chroma",
+      "向量检索"
+    ],
+    "preferred_skills": [
+      "LangChain",
+      "评估"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "2年以上相关项目经验，优秀应届研究生可放宽",
+    "responsibilities": [
+      "负责RAG 工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉Python与RAG",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有LangChain经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：RAG 工程师。部门：知识检索组。要求掌握Python, RAG, LlamaIndex, Chroma, 向量检索，加分项包括LangChain, 评估。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_002",
+      "RAG",
+      "知识检索组"
+    ]
+  },
+  {
+    "job_id": "job_003",
+    "title": "Python 后端工程师",
+    "level": "中级",
+    "department": "业务平台组",
+    "required_skills": [
+      "Python",
+      "FastAPI",
+      "SQL",
+      "Redis",
+      "Docker"
+    ],
+    "preferred_skills": [
+      "异步任务",
+      "可观测性"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "3年以上工程实践经验",
+    "responsibilities": [
+      "负责Python 后端工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉Python与FastAPI",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有异步任务经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：Python 后端工程师。部门：业务平台组。要求掌握Python, FastAPI, SQL, Redis, Docker，加分项包括异步任务, 可观测性。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_003",
+      "Python",
+      "业务平台组"
+    ]
+  },
+  {
+    "job_id": "job_004",
+    "title": "Java 后端工程师",
+    "level": "中级",
+    "department": "交易服务组",
+    "required_skills": [
+      "Java",
+      "Spring Boot",
+      "MySQL",
+      "Redis",
+      "Kafka"
+    ],
+    "preferred_skills": [
+      "高并发",
+      "分布式"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "3年以上工程实践经验",
+    "responsibilities": [
+      "负责Java 后端工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉Java与Spring Boot",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有高并发经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：Java 后端工程师。部门：交易服务组。要求掌握Java, Spring Boot, MySQL, Redis, Kafka，加分项包括高并发, 分布式。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_004",
+      "Java",
+      "交易服务组"
+    ]
+  },
+  {
+    "job_id": "job_005",
+    "title": "测试开发工程师",
+    "level": "中级",
+    "department": "质量平台组",
+    "required_skills": [
+      "Python",
+      "自动化测试",
+      "Pytest",
+      "压测",
+      "CI/CD"
+    ],
+    "preferred_skills": [
+      "可观测性",
+      "稳定性"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "3年以上工程实践经验",
+    "responsibilities": [
+      "负责测试开发工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉Python与自动化测试",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有可观测性经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：测试开发工程师。部门：质量平台组。要求掌握Python, 自动化测试, Pytest, 压测, CI/CD，加分项包括可观测性, 稳定性。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_005",
+      "测试开发工程师",
+      "质量平台组"
+    ]
+  },
+  {
+    "job_id": "job_006",
+    "title": "推荐算法工程师",
+    "level": "中级",
+    "department": "推荐算法组",
+    "required_skills": [
+      "召回",
+      "排序",
+      "特征工程",
+      "A/B测试",
+      "Python"
+    ],
+    "preferred_skills": [
+      "DeepFM",
+      "向量召回"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "3年以上工程实践经验",
+    "responsibilities": [
+      "负责推荐算法工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉召回与排序",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有DeepFM经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：推荐算法工程师。部门：推荐算法组。要求掌握召回, 排序, 特征工程, A/B测试, Python，加分项包括DeepFM, 向量召回。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_006",
+      "推荐算法工程师",
+      "推荐算法组"
+    ]
+  },
+  {
+    "job_id": "job_007",
+    "title": "计算机视觉工程师",
+    "level": "中级",
+    "department": "视觉算法组",
+    "required_skills": [
+      "PyTorch",
+      "目标检测",
+      "分割",
+      "OpenCV",
+      "训练部署"
+    ],
+    "preferred_skills": [
+      "Transformer",
+      "数据增强"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "2年以上相关项目经验，优秀应届研究生可放宽",
+    "responsibilities": [
+      "负责计算机视觉工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉PyTorch与目标检测",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有Transformer经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：计算机视觉工程师。部门：视觉算法组。要求掌握PyTorch, 目标检测, 分割, OpenCV, 训练部署，加分项包括Transformer, 数据增强。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_007",
+      "计算机视觉工程师",
+      "视觉算法组"
+    ]
+  },
+  {
+    "job_id": "job_008",
+    "title": "3D Vision / 3D Gaussian Splatting 工程师",
+    "level": "中高级",
+    "department": "三维视觉组",
+    "required_skills": [
+      "PyTorch",
+      "3DGS",
+      "NeRF",
+      "渲染",
+      "SMPL"
+    ],
+    "preferred_skills": [
+      "CUDA",
+      "三维重建"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "2年以上相关项目经验，优秀应届研究生可放宽",
+    "responsibilities": [
+      "负责3D Vision / 3D Gaussian Splatting 工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉PyTorch与3DGS",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有CUDA经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：3D Vision / 3D Gaussian Splatting 工程师。部门：三维视觉组。要求掌握PyTorch, 3DGS, NeRF, 渲染, SMPL，加分项包括CUDA, 三维重建。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_008",
+      "3D",
+      "三维视觉组"
+    ]
+  },
+  {
+    "job_id": "job_009",
+    "title": "多模态算法工程师",
+    "level": "中高级",
+    "department": "多模态模型组",
+    "required_skills": [
+      "PyTorch",
+      "多模态",
+      "CLIP",
+      "LLM",
+      "Diffusion"
+    ],
+    "preferred_skills": [
+      "视频理解",
+      "AIGC"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "2年以上相关项目经验，优秀应届研究生可放宽",
+    "responsibilities": [
+      "负责多模态算法工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉PyTorch与多模态",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有视频理解经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：多模态算法工程师。部门：多模态模型组。要求掌握PyTorch, 多模态, CLIP, LLM, Diffusion，加分项包括视频理解, AIGC。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_009",
+      "多模态算法工程师",
+      "多模态模型组"
+    ]
+  },
+  {
+    "job_id": "job_010",
+    "title": "数据工程师",
+    "level": "中级",
+    "department": "数据平台组",
+    "required_skills": [
+      "SQL",
+      "Spark",
+      "Airflow",
+      "ETL",
+      "数据仓库"
+    ],
+    "preferred_skills": [
+      "Flink",
+      "湖仓"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "3年以上工程实践经验",
+    "responsibilities": [
+      "负责数据工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉SQL与Spark",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有Flink经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：数据工程师。部门：数据平台组。要求掌握SQL, Spark, Airflow, ETL, 数据仓库，加分项包括Flink, 湖仓。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_010",
+      "数据工程师",
+      "数据平台组"
+    ]
+  },
+  {
+    "job_id": "job_011",
+    "title": "DevOps / 平台工程师",
+    "level": "中级",
+    "department": "基础设施组",
+    "required_skills": [
+      "Docker",
+      "Kubernetes",
+      "CI/CD",
+      "Prometheus",
+      "Linux"
+    ],
+    "preferred_skills": [
+      "Terraform",
+      "SRE"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "3年以上工程实践经验",
+    "responsibilities": [
+      "负责DevOps / 平台工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉Docker与Kubernetes",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有Terraform经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：DevOps / 平台工程师。部门：基础设施组。要求掌握Docker, Kubernetes, CI/CD, Prometheus, Linux，加分项包括Terraform, SRE。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_011",
+      "DevOps",
+      "基础设施组"
+    ]
+  },
+  {
+    "job_id": "job_012",
+    "title": "前端工程师",
+    "level": "中级",
+    "department": "前端体验组",
+    "required_skills": [
+      "TypeScript",
+      "React",
+      "Vue",
+      "状态管理",
+      "性能优化"
+    ],
+    "preferred_skills": [
+      "可视化",
+      "工程化"
+    ],
+    "education_requirement": "本科及以上，计算机、软件工程、人工智能或相关专业",
+    "experience_requirement": "3年以上工程实践经验",
+    "responsibilities": [
+      "负责前端工程师相关系统或模型能力建设",
+      "与产品、数据和工程团队协作，交付可验证的技术方案",
+      "沉淀评估指标、工程规范和故障排查文档"
+    ],
+    "hard_constraints": [
+      "熟悉TypeScript与React",
+      "能够独立完成需求拆解和上线交付"
+    ],
+    "soft_preferences": [
+      "有可视化经验优先",
+      "关注工程质量、可观测性和安全边界"
+    ],
+    "jd_text": "岗位：前端工程师。部门：前端体验组。要求掌握TypeScript, React, Vue, 状态管理, 性能优化，加分项包括可视化, 工程化。候选人需要有清晰的项目交付经历，能够说明方案设计、指标验证、上线运维和问题复盘。",
+    "tags": [
+      "job_012",
+      "前端工程师",
+      "前端体验组"
+    ]
+  }
+]

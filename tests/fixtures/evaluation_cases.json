@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "fixture_version": "v1",
+    "summary_only": true
+  },
+  "cases": [
+    {
+      "case_id": "runtime_timeline_completed",
+      "target_type": "runtime_timeline",
+      "input_data": [
+        {"event_type": "task_created"},
+        {"event_type": "skill_completed"},
+        {"event_type": "skill_completed"},
+        {"event_type": "task_completed"}
+      ],
+      "checks": [
+        {"type": "event_type_present", "event_type": "task_completed"},
+        {"type": "event_type_count_at_least", "event_type": "skill_completed", "value": 2},
+        {"type": "event_type_absent", "event_type": "tool_denied"}
+      ],
+      "tags": ["runtime", "smoke"],
+      "metadata": {"summary_only": true}
+    },
+    {
+      "case_id": "skill_workflow_match",
+      "target_type": "skill_workflow",
+      "input_data": {
+        "status": "completed",
+        "retrieved_candidates": [{"candidate_id": "candidate_fixture_1"}],
+        "match_reports": [{"total_score": 88.0}]
+      },
+      "checks": [
+        {"type": "status_is", "value": "completed"},
+        {"type": "min_count", "path": "retrieved_candidates", "value": 1},
+        {"type": "min_count", "path": "match_reports", "value": 1}
+      ],
+      "tags": ["skill", "workflow", "smoke"],
+      "metadata": {"summary_only": true}
+    },
+    {
+      "case_id": "tool_workflow_completed",
+      "target_type": "tool_workflow",
+      "input_data": {
+        "status": "completed",
+        "outputs": {
+          "parsed": {"type": "dict", "keys": ["keywords"], "size": 1}
+        },
+        "steps": [{"tool_name": "resume_text_parse_fake", "success": true}]
+      },
+      "checks": [
+        {"type": "status_is", "value": "completed"},
+        {"type": "required_keys_present", "path": "outputs", "keys": ["parsed"]},
+        {"type": "min_count", "path": "steps", "value": 1}
+      ],
+      "tags": ["tool", "workflow", "smoke"],
+      "metadata": {"summary_only": true}
+    }
+  ]
+}

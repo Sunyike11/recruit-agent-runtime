@@ -1,0 +1,142 @@
+{
+  "metadata": {
+    "phase": "6B",
+    "summary_only": true,
+    "real_production_graph_invoked": false
+  },
+  "fixtures": [
+    {
+      "fixture_id": "aligned_python_langgraph_candidate",
+      "raw_jd": "Need Python LangGraph engineer",
+      "production_state": {
+        "messages": [
+          {
+            "content": "Need Python LangGraph engineer"
+          }
+        ],
+        "extracted_jd": {
+          "title": "Agent Engineer",
+          "required_skills": [
+            "Python",
+            "LangGraph"
+          ],
+          "search_query": "Python LangGraph"
+        },
+        "candidate_pool": [
+          {
+            "candidate_id": "candidate_1"
+          }
+        ],
+        "final_reports": [
+          {
+            "candidate_id": "candidate_1",
+            "total_score": 95
+          }
+        ]
+      },
+      "shadow_result": {
+        "status": "completed",
+        "success": true,
+        "job_requirement": {
+          "title": "Agent Engineer",
+          "required_skills": [
+            "Python",
+            "LangGraph"
+          ],
+          "metadata": {
+            "search_query": "Python LangGraph"
+          }
+        },
+        "retrieved_candidates": [
+          {
+            "candidate_id": "candidate_1"
+          }
+        ],
+        "match_reports": [
+          {
+            "candidate_id": "candidate_1",
+            "total_score": 92
+          }
+        ],
+        "refined_query": null,
+        "memory_context": "Optional approved preview summary"
+      },
+      "expected_alignment": {
+        "job_requirement_keys": [
+          "title",
+          "required_skills"
+        ],
+        "compare_exact_scores": false
+      },
+      "metadata": {
+        "fixture_kind": "fake_structural_parity"
+      }
+    },
+    {
+      "fixture_id": "candidate_count_mismatch",
+      "raw_jd": "Need Python platform engineer",
+      "production_state": {
+        "messages": [
+          {
+            "content": "Need Python platform engineer"
+          }
+        ],
+        "extracted_jd": {
+          "title": "Platform Engineer",
+          "required_skills": [
+            "Python"
+          ],
+          "search_query": "Python"
+        },
+        "candidate_pool": [
+          {
+            "candidate_id": "candidate_2"
+          },
+          {
+            "candidate_id": "candidate_3"
+          }
+        ],
+        "final_reports": [
+          {
+            "candidate_id": "candidate_2",
+            "total_score": 80
+          }
+        ]
+      },
+      "shadow_result": {
+        "status": "completed",
+        "success": true,
+        "job_requirement": {
+          "title": "Platform Engineer",
+          "required_skills": [
+            "Python"
+          ],
+          "metadata": {
+            "search_query": "Python"
+          }
+        },
+        "retrieved_candidates": [
+          {
+            "candidate_id": "candidate_2"
+          }
+        ],
+        "match_reports": [
+          {
+            "candidate_id": "candidate_2",
+            "total_score": 80
+          }
+        ],
+        "refined_query": null
+      },
+      "expected_alignment": {
+        "job_requirement_keys": [
+          "title",
+          "required_skills"
+        ]
+      },
+      "metadata": {
+        "fixture_kind": "fake_mismatch"
+      }
+    }
+  ]
+}

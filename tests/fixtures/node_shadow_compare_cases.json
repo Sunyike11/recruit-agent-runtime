@@ -1,0 +1,104 @@
+{
+  "cases": [
+    {
+      "case_id": "refiner_aligned_snapshot",
+      "node_name": "query_refine",
+      "node_type": "refiner",
+      "input_data": {
+        "query": "python langgraph"
+      },
+      "production_output": {
+        "extracted_jd": {
+          "search_query": "python langgraph remote"
+        }
+      },
+      "shadow_output": {
+        "refined_query": "python langgraph remote"
+      },
+      "expected_decision": "match",
+      "tags": ["aligned", "refiner", "low-risk"],
+      "metadata": {
+        "fixture_kind": "fake_snapshot"
+      }
+    },
+    {
+      "case_id": "matcher_aligned_score_presence",
+      "node_name": "candidate_match",
+      "node_type": "matcher",
+      "input_data": {
+        "candidate_id": "candidate_1"
+      },
+      "production_output": {
+        "final_reports": [
+          {
+            "candidate_id": "candidate_1",
+            "total_score": 91
+          }
+        ]
+      },
+      "shadow_output": {
+        "match_report": {
+          "candidate_id": "candidate_1",
+          "total_score": 84
+        },
+        "total_score": 84
+      },
+      "expected_decision": "match",
+      "compare_exact_scores": false,
+      "tags": ["aligned", "matcher", "low-risk"],
+      "metadata": {
+        "fixture_kind": "fake_snapshot"
+      }
+    },
+    {
+      "case_id": "refiner_query_mismatch",
+      "node_name": "query_refine",
+      "node_type": "refiner",
+      "input_data": {
+        "query": "python langgraph"
+      },
+      "production_output": {
+        "extracted_jd": {
+          "search_query": "python langgraph remote"
+        }
+      },
+      "shadow_output": {
+        "refined_query": "python backend onsite"
+      },
+      "expected_decision": "mismatch",
+      "tags": ["mismatch", "refiner"],
+      "metadata": {
+        "fixture_kind": "fake_snapshot"
+      }
+    },
+    {
+      "case_id": "matcher_exact_score_mismatch",
+      "node_name": "candidate_match",
+      "node_type": "matcher",
+      "input_data": {
+        "candidate_id": "candidate_2"
+      },
+      "production_output": {
+        "final_reports": [
+          {
+            "candidate_id": "candidate_2",
+            "total_score": 93
+          }
+        ]
+      },
+      "shadow_output": {
+        "match_report": {
+          "candidate_id": "candidate_2",
+          "total_score": 70
+        },
+        "total_score": 70
+      },
+      "expected_decision": "mismatch",
+      "compare_exact_scores": true,
+      "tags": ["mismatch", "matcher", "exact-score"],
+      "metadata": {
+        "fixture_kind": "fake_snapshot"
+      }
+    }
+  ]
+}
