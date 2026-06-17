@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -29,6 +30,7 @@ from src.integration.production_skill_graph import (  # noqa: E402
     ProductionSkillGraphConfig,
     build_production_skill_graph_runner,
 )
+from src.mcp.gateway import build_candidate_mcp_retrieve_callable  # noqa: E402
 
 
 def parse_args(argv=None):
@@ -111,6 +113,12 @@ def parse_args(argv=None):
         action="store_true",
         help="Disable the one-shot legacy fallback when default skill graph has a hard failure.",
     )
+    parser.add_argument(
+        "--candidate-source",
+        choices=["direct", "mcp"],
+        default=None,
+        help="Candidate data source for the production Skill graph. Defaults to RECRUIT_CANDIDATE_SOURCE or direct.",
+    )
     parser.add_argument("--json", action="store_true", help="Emit JSON summary.")
     parser.add_argument("--strict", action="store_true", help="Exit non-zero on failed runtime execution.")
     return parser.parse_args(argv)
@@ -131,6 +139,7 @@ def run_cli(
 ):
     args = parse_args(argv)
     jd_text = load_jd_text(args.jd, args.jd_file)
+    candidate_source = _resolve_candidate_source(args.candidate_source)
     default = default_runner or build_default_graph_runner()
     graph_factory_config = resolve_recruit_graph_factory_config(
         requested_graph_mode=args.graph_mode,
@@ -185,17 +194,23 @@ def run_cli(
     use_variant = bool(args.use_skill_backed_variant or args.use_real_skill_wrappers)
     production_runner = production_skill_graph_runner
     if production_runner is None and graph_factory_config.mode.value == "skill":
+        production_retriever_callable = real_retriever_callable
+        if candidate_source == "mcp":
+            production_retriever_callable = build_candidate_mcp_retrieve_callable(
+                direct_fallback_callable=real_retriever_callable,
+            )
         production_runner = build_production_skill_graph_runner(
             ProductionSkillGraphConfig(
                 enabled=True,
                 allow_planner_fallback=bool(args.allow_planner_fallback),
                 use_real_retriever=True,
                 use_candidate_profile_preview=True,
+                candidate_source=candidate_source,
                 rollback_on_failure=not args.no_rollback,
                 summary_only=True,
             ),
             planner_extract_callable=planner_extract_callable,
-            retrieve_callable=real_retriever_callable,
+            retrieve_callable=production_retriever_callable,
             match_callable=match_callable,
             refine_callable=refine_callable,
         ).run
@@ -245,6 +260,7 @@ def run_cli(
             "selection_reason": graph_factory_config.selection_reason,
             "legacy_alias_used": bool(graph_factory_config.legacy_alias_used),
             "legacy_fallback_enabled": not args.disable_legacy_fallback,
+            "candidate_source": candidate_source,
             "use_demo_memory_context": bool(args.use_demo_memory_context),
             "memory_context_summary": memory_context_summary,
         },
@@ -287,6 +303,13 @@ def _emit(payload, *, as_json: bool):
     print(f"event_count={payload.get('event_count', 0)}")
     print(f"error_type={payload.get('error_type', '')}")
     print("summary_only=true")
+
+
+def _resolve_candidate_source(cli_value: str | None) -> str:
+    value = (cli_value or os.environ.get("RECRUIT_CANDIDATE_SOURCE") or "direct").strip().lower()
+    if value not in {"direct", "mcp"}:
+        raise ValueError("invalid_candidate_source")
+    return value
 
 
 def main(argv=None):

@@ -9,7 +9,7 @@
 Recruit-Graph 将招聘匹配流程拆分为可执行、可观测、可回退的 Skill：
 
 ```text
-JD -> Planner -> Retriever -> CandidateProfilePreview -> Matcher -> Refiner
+JD -> Planner -> Retriever -> CandidateProfilePreview -> Matcher -> claim_verify -> Refiner
 ```
 
 当前默认主链路是 Skill Production Graph。Legacy Graph 仍保留为兼容基线和硬故障回滚路径，便于对比与回退。
@@ -22,6 +22,8 @@ JD -> Planner -> Retriever -> CandidateProfilePreview -> Matcher -> Refiner
 - 候选人匹配评分、排序与推荐依据生成
 - Planner、Retriever、Matcher、Refiner Skill
 - SkillExecutor 驱动的默认生产主链路
+- `claim_verify@1.0.0` 跨 Matcher / Resume Rewrite 复用
+- Candidate MCP Server：`search_candidates`、`get_candidate_profile`、`get_resume_evidence` 三个只读工具
 - Session、Task、Thread、Event Runtime
 - SQLite 任务状态与事件日志持久化
 - Skill 硬故障时回退 Legacy Graph
@@ -40,14 +42,17 @@ flowchart TD
     E --> F[Planner Skill]
     E --> G[Retriever Skill]
     E --> H[Matcher Skill]
-    E --> I[Refiner Skill]
+    E --> I[claim_verify Skill]
+    E --> R[Refiner Skill]
 
-    G --> J[Candidate Index]
+    G --> M[Candidate MCP Gateway]
+    M --> N[Candidate MCP Server]
+    N --> J[Candidate Provider / Index]
     B --> K[SQLite Runtime Store]
     K --> L[Session / Task / Event]
 ```
 
-Runtime 是统一执行入口，负责 Session、Task、Thread 和事件生命周期；默认由 Skill Production Graph 执行招聘匹配，Legacy Graph 仅作为兼容基线和硬故障回滚路径。
+Runtime 是统一执行入口，负责 Session、Task、Thread 和事件生命周期；默认由 Skill Production Graph 执行招聘匹配，Legacy Graph 仅作为兼容基线和硬故障回滚路径。Candidate MCP Server 目前采用本地 stdio transport，提供 summary-only 的只读候选人数据访问。
 
 ## 使用方式
 
@@ -88,6 +93,26 @@ python scripts/run_recruit_runtime.py \
   --jd "招聘熟悉 Python、RAG 和 LangGraph 的 AI Agent 工程师" \
   --json
 ```
+
+### 使用 Candidate MCP 数据源
+
+启动本地只读 Candidate MCP Server：
+
+```bash
+python scripts/run_candidate_mcp_server.py \
+  --dataset-dir evaluation_data/v1
+```
+
+通过默认 Skill Production Graph 使用 MCP 候选人数据源：
+
+```bash
+python scripts/run_recruit_runtime.py \
+  --candidate-source mcp \
+  --jd "招聘熟悉 Python、RAG 和 LangGraph 的 AI Agent 工程师" \
+  --json
+```
+
+MCP 模式使用 synthetic/anonymized evaluation dataset 作为公开示例数据源。生产或私有简历数据应保存在本地私有目录，并通过受控 provider 接入。
 
 ### 查看任务事件
 
@@ -133,6 +158,7 @@ src/
   evaluation/    Retriever 与 Matcher 评估
   memory/        Memory 基础设施
   tools/         Tool 与 MCP 接入基础
+  mcp/           Candidate MCP Server / Client / Gateway
 
 scripts/         索引、运行和检查脚本
 tests/           单元测试与集成测试
@@ -149,7 +175,7 @@ docs/            对外架构、评估和路线说明
 - [x] Legacy hard-failure fallback
 - [x] Retrieval and Matcher evaluation
 - [x] Observation-only Claim Verification Skill
-- [ ] Candidate MCP server
+- [x] Candidate MCP server with three read-only tools
 - [ ] FastAPI resume upload and asynchronous tasks
 - [ ] Production observability
 
@@ -160,11 +186,11 @@ docs/            对外架构、评估和路线说明
 - 候选人检索、匹配与排序
 - Runtime 任务和事件持久化
 - Legacy 硬故障回滚
+- Candidate MCP stdio server 和只读工具访问
 - 离线评估与安全测试
 
 Coming Soon：
 
-- Candidate MCP Server
 - FastAPI 简历上传与匹配接口
 - 异步任务与 SSE 事件流
 - PostgreSQL / Redis
@@ -183,6 +209,8 @@ Coming Soon：
 - API key / token
 
 仓库内的 `evaluation_data/v1` 是 synthetic/anonymized 技术招聘评估集，使用 `candidate_001` 这类稳定 ID，不包含真实个人信息。
+
+Candidate MCP Server 默认只暴露三个只读工具，并包含 allowlist、参数校验、timeout、调用预算、tenant/access scope contract 和 summary-only Runtime events。简历中的 Prompt Injection 文本只会被当作候选人数据处理，不会改变工具权限或扩大返回字段。
 
 ## License
 
