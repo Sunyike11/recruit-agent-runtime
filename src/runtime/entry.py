@@ -84,6 +84,7 @@ class RuntimeEntryHarness:
                     "use_production_skill_graph": bool(entry_config.use_production_skill_graph),
                     "graph_mode": str(entry_config.graph_mode or ""),
                     "legacy_fallback_enabled": bool(entry_config.legacy_fallback_enabled),
+                    "candidate_source": str(entry_config.metadata.get("candidate_source") or ""),
                     "allow_memory_context": bool(entry_config.allow_memory_context),
                     "allow_planner_fallback": bool(entry_config.allow_planner_fallback),
                 },
@@ -916,6 +917,7 @@ def summarize_runner_output(output: Any) -> Dict[str, Any]:
         "candidate_preview_source": str(data.get("candidate_preview_source") or ""),
         "candidate_preview_version": str(data.get("candidate_preview_version") or ""),
         "matcher_input_source": str(data.get("matcher_input_source") or ""),
+        **_safe_mcp_summary(data),
         "candidate_ids": [str(item) for item in data.get("candidate_ids", []) if str(item)],
         "top_scores": [float(item) for item in data.get("top_scores", []) if isinstance(item, (int, float))],
         "skill_names": [str(item) for item in data.get("skill_names", []) if str(item)],
@@ -1015,6 +1017,25 @@ def _config_error_runner(error_hint: str):
         }
 
     return run
+
+
+def _safe_mcp_summary(data: Mapping[str, Any]) -> Dict[str, Any]:
+    candidate_source = str(data.get("candidate_source") or "")
+    mcp_server = str(data.get("mcp_server") or "")
+    mcp_transport = str(data.get("mcp_transport") or "")
+    tool_success_count = _safe_int(data.get("tool_success_count"))
+    mcp_tool_event_count = _safe_int(data.get("mcp_tool_event_count"))
+    mcp_fallback_used = bool(data.get("mcp_fallback_used", False))
+    if not any([candidate_source, mcp_server, mcp_transport, tool_success_count, mcp_tool_event_count, mcp_fallback_used]):
+        return {}
+    return {
+        "candidate_source": candidate_source,
+        "mcp_server": mcp_server,
+        "mcp_transport": mcp_transport,
+        "tool_success_count": tool_success_count,
+        "mcp_fallback_used": mcp_fallback_used,
+        "mcp_tool_event_count": mcp_tool_event_count,
+    }
 
 
 def _result_metadata(raw_jd: str, config: RuntimeEntryConfig, selection_metadata: Optional[Mapping[str, Any]] = None) -> Dict[str, Any]:

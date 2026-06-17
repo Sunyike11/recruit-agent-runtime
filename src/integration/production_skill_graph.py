@@ -44,6 +44,7 @@ class ProductionSkillGraphConfig:
     max_refine_loops: int = 1
     low_score_threshold: float = 60.0
     enable_claim_verification: bool = True
+    candidate_source: str = "direct"
     rollback_on_failure: bool = True
     summary_only: bool = True
     metadata: Dict[str, Any] = field(default_factory=dict)
@@ -204,6 +205,19 @@ class ProductionSkillGraphRunner:
                     return self._failed(state, skill_results, "retriever_failed", retriever.error, runtime_store, context)
 
                 retrieval_output = dict(retriever.output or {})
+                _append_tool_events_from_metadata(runtime_store, context, retrieval_output.get("metadata"))
+                retrieval_metadata = dict(retrieval_output.get("metadata") or {})
+                for key in (
+                    "candidate_source",
+                    "mcp_server",
+                    "mcp_transport",
+                    "tool_success_count",
+                    "mcp_fallback_used",
+                    "mcp_error_type",
+                ):
+                    if key in retrieval_metadata:
+                        state.metadata[key] = retrieval_metadata[key]
+                state.metadata["tool_events"] = list(retrieval_metadata.get("tool_events") or [])
                 state.retrieved_documents = list(retrieval_output.get("resume_documents") or [])
                 candidates = list(retrieval_output.get("candidates") or [])
                 if not candidates and self.config.use_candidate_profile_preview:
@@ -423,6 +437,12 @@ class ProductionSkillGraphRunner:
                 "candidate_preview_source": "document_chunk_projection_v2" if state.candidate_previews else "",
                 "candidate_preview_version": "v2" if state.candidate_previews else "",
                 "matcher_input_source": "candidate_profile_preview" if state.candidate_previews else "",
+                "candidate_source": _candidate_source(state),
+                "mcp_server": _mcp_metadata_value(state, "mcp_server"),
+                "mcp_transport": _mcp_metadata_value(state, "mcp_transport"),
+                "tool_success_count": _safe_int(_mcp_metadata_value(state, "tool_success_count")),
+                "mcp_fallback_used": bool(_mcp_metadata_value(state, "mcp_fallback_used")),
+                "mcp_tool_event_count": len(state.metadata.get("tool_events", [])),
                 "candidate_previews": [_safe_candidate_preview_summary(candidate) for candidate in state.candidate_previews],
                 "match_reports": [_safe_match_report_summary(report) for report in state.match_reports],
                 **_claim_verification_summary(state),
@@ -630,6 +650,46 @@ def _append_node_event(
     )
 
 
+def _append_tool_events_from_metadata(runtime_store: Any, context: SkillExecutionContext, metadata: Any) -> None:
+    if not isinstance(metadata, Mapping):
+        return
+    events = [event for event in metadata.get("tool_events", []) if isinstance(event, Mapping)]
+    if not events:
+        return
+    for event in events:
+        event_type = str(event.get("event_type") or "tool_completed")
+        if runtime_store is not None and getattr(context, "task_id", ""):
+            runtime_store.append_event(
+                event_type,
+                session_id=context.session_id,
+                task_id=context.task_id,
+                payload=build_runtime_event_payload(
+                    session_id=context.session_id,
+                    task_id=context.task_id,
+                    thread_id=context.thread_id,
+                    graph_mode="skill",
+                    runner_name="production_skill_graph",
+                    skill_name=str(event.get("skill_name") or "resume_retrieve"),
+                    status=str(event.get("status") or ""),
+                    duration_ms=event.get("duration_ms"),
+                    error_type=str(event.get("error_type") or ""),
+                    fallback_used=bool(event.get("fallback_used", False)),
+                    extra={
+                        "tool_name": str(event.get("tool_name") or ""),
+                        "mcp_server_name": str(event.get("mcp_server_name") or ""),
+                        "transport": str(event.get("transport") or ""),
+                        "request_id": str(event.get("request_id") or ""),
+                        "timeout": bool(event.get("timeout", False)),
+                        "permission_decision": str(event.get("permission_decision") or ""),
+                        "result_count": _safe_int(event.get("result_count")),
+                        "summary_only": True,
+                    },
+                ),
+            )
+    context.metadata.setdefault("tool_event_count", 0)
+    context.metadata["tool_event_count"] = int(context.metadata["tool_event_count"]) + len(events)
+
+
 def _summary_payload(payload: Mapping[str, Any]) -> Dict[str, Any]:
     return {
         "status": str(payload.get("status") or ""),
@@ -658,6 +718,14 @@ def _safe_job_requirement_summary(job_requirement: Mapping[str, Any]) -> Dict[st
         "required_skill_count": len(job_requirement.get("required_skills") or job_requirement.get("tech_stack") or []),
         "summary_only": True,
     }
+
+
+def _candidate_source(state: ProductionSkillGraphState) -> str:
+    return str(state.metadata.get("candidate_source") or state.metadata.get("retriever_candidate_source") or "")
+
+
+def _mcp_metadata_value(state: ProductionSkillGraphState, key: str) -> Any:
+    return state.metadata.get(key, "")
 
 
 def _planner_fallback_used(job_requirement: Mapping[str, Any]) -> bool:
