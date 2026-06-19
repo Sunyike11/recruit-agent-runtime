@@ -2,7 +2,7 @@
 
 基于 Skill 与 Runtime 的智能招聘匹配系统。
 
-输入招聘 JD，系统自动解析岗位需求、检索候选人、生成匹配评分与推荐依据，并通过持久化 Runtime 记录任务状态和执行事件。项目面向本地简历筛选、技术招聘匹配实验，以及 Skill-based Agent Runtime 架构展示。
+输入招聘 JD，系统自动解析岗位需求、检索候选人、生成匹配评分与推荐依据，并通过持久化 Runtime 记录任务状态和执行事件。项目面向本地简历筛选、技术招聘匹配实验，以及 Skill-based Agent Runtime / FastAPI Runtime Service 架构展示。
 
 ## 项目简介
 
@@ -24,6 +24,7 @@ JD -> Planner -> Retriever -> CandidateProfilePreview -> Matcher -> claim_verify
 - SkillExecutor 驱动的默认生产主链路
 - `claim_verify@1.0.0` 跨 Matcher / Resume Rewrite 复用
 - Candidate MCP Server：`search_candidates`、`get_candidate_profile`、`get_resume_evidence` 三个只读工具
+- FastAPI Runtime Service：异步任务、事件查询、SSE、反馈与取消
 - Session、Task、Thread、Event Runtime
 - SQLite 任务状态与事件日志持久化
 - Skill 硬故障时回退 Legacy Graph
@@ -34,7 +35,7 @@ JD -> Planner -> Retriever -> CandidateProfilePreview -> Matcher -> claim_verify
 
 ```mermaid
 flowchart TD
-    A[CLI / Future API] --> B[Agent Runtime]
+    A[CLI / FastAPI] --> B[Agent Runtime]
     B --> C[Skill Production Graph]
     B --> D[Legacy Fallback Graph]
 
@@ -48,11 +49,13 @@ flowchart TD
     G --> M[Candidate MCP Gateway]
     M --> N[Candidate MCP Server]
     N --> J[Candidate Provider / Index]
+    A --> Q[Async Task API]
+    Q --> B
     B --> K[SQLite Runtime Store]
     K --> L[Session / Task / Event]
 ```
 
-Runtime 是统一执行入口，负责 Session、Task、Thread 和事件生命周期；默认由 Skill Production Graph 执行招聘匹配，Legacy Graph 仅作为兼容基线和硬故障回滚路径。Candidate MCP Server 目前采用本地 stdio transport，提供 summary-only 的只读候选人数据访问。
+Runtime 是统一执行入口，负责 Session、Task、Thread 和事件生命周期；默认由 Skill Production Graph 执行招聘匹配，Legacy Graph 仅作为兼容基线和硬故障回滚路径。FastAPI 层只负责租户、幂等、队列、任务查询和事件流，不直接调用 Agent。Candidate MCP Server 目前采用本地 stdio transport，提供 summary-only 的只读候选人数据访问。
 
 ## 使用方式
 
@@ -113,6 +116,42 @@ python scripts/run_recruit_runtime.py \
 ```
 
 MCP 模式使用 synthetic/anonymized evaluation dataset 作为公开示例数据源。生产或私有简历数据应保存在本地私有目录，并通过受控 provider 接入。
+
+### 启动 FastAPI Runtime Service
+
+```bash
+python scripts/run_api_server.py \
+  --host 127.0.0.1 \
+  --port 8765
+```
+
+创建异步匹配任务：
+
+```bash
+curl -X POST "http://127.0.0.1:8765/matching/tasks" \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-ID: demo_tenant" \
+  -H "Idempotency-Key: demo-task-001" \
+  -d '{
+    "jd_text": "招聘熟悉 Python、RAG 和 LangGraph 的 AI Agent 工程师",
+    "candidate_source": "mcp"
+  }'
+```
+
+查询任务和事件：
+
+```bash
+curl -H "X-Tenant-ID: demo_tenant" \
+  "http://127.0.0.1:8765/tasks/<task_id>"
+
+curl -H "X-Tenant-ID: demo_tenant" \
+  "http://127.0.0.1:8765/tasks/<task_id>/events"
+
+curl -N -H "X-Tenant-ID: demo_tenant" \
+  "http://127.0.0.1:8765/tasks/<task_id>/stream"
+```
+
+API 当前提供 `POST /matching/tasks`、`GET /tasks/{task_id}`、`GET /tasks/{task_id}/events`、`GET /tasks/{task_id}/stream`、`POST /tasks/{task_id}/feedback`、`POST /tasks/{task_id}/cancel`。第一版使用进程内有界 worker queue；PostgreSQL、Redis、Celery 和完整认证属于后续计划。
 
 ### 查看任务事件
 
@@ -176,7 +215,9 @@ docs/            对外架构、评估和路线说明
 - [x] Retrieval and Matcher evaluation
 - [x] Observation-only Claim Verification Skill
 - [x] Candidate MCP server with three read-only tools
-- [ ] FastAPI resume upload and asynchronous tasks
+- [x] FastAPI Runtime Service MVP
+- [ ] FastAPI resume upload UI / endpoint
+- [ ] Durable async queue and production database
 - [ ] Production observability
 
 当前可用：
@@ -187,13 +228,14 @@ docs/            对外架构、评估和路线说明
 - Runtime 任务和事件持久化
 - Legacy 硬故障回滚
 - Candidate MCP stdio server 和只读工具访问
+- FastAPI 异步任务、事件查询、SSE、反馈与取消
 - 离线评估与安全测试
 
 Coming Soon：
 
-- FastAPI 简历上传与匹配接口
-- 异步任务与 SSE 事件流
+- FastAPI 简历上传接口
 - PostgreSQL / Redis
+- durable async queue / task ownership
 - OpenTelemetry 与监控面板
 
 ## 数据与隐私说明
@@ -211,6 +253,8 @@ Coming Soon：
 仓库内的 `evaluation_data/v1` 是 synthetic/anonymized 技术招聘评估集，使用 `candidate_001` 这类稳定 ID，不包含真实个人信息。
 
 Candidate MCP Server 默认只暴露三个只读工具，并包含 allowlist、参数校验、timeout、调用预算、tenant/access scope contract 和 summary-only Runtime events。简历中的 Prompt Injection 文本只会被当作候选人数据处理，不会改变工具权限或扩大返回字段。
+
+FastAPI Runtime Service 要求业务接口携带 `X-Tenant-ID`，创建任务建议提供 `Idempotency-Key`。当前多租户能力是 MVP 级隔离 contract：任务、事件、反馈和取消按 tenant 校验；完整认证、授权、速率限制和分布式任务队列仍在 roadmap。
 
 ## License
 
