@@ -11,6 +11,7 @@ ALLOWED_METADATA_KEYS = {"request_source", "trace_label", "experiment", "notes"}
 class CreateMatchingTaskRequest(BaseModel):
     jd_text: str = Field(..., min_length=1, max_length=8000)
     candidate_source: Literal["direct", "mcp"] = "direct"
+    memory_mode: Literal["off", "governed"] = "off"
     allow_legacy_fallback: bool = True
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
@@ -58,6 +59,18 @@ class TaskSummaryResponse(BaseModel):
     fallback_attempted: bool = False
     fallback_succeeded: bool = False
     cancel_requested: bool = False
+    human_review_status: str = "not_required"
+    effective_result_status: str = "original"
+    memory_mode: str = "off"
+    memory_context_requested: bool = False
+    memory_context_provided: bool = False
+    memory_records_seen: int = 0
+    memory_eligible_count: int = 0
+    memory_denied_count: int = 0
+    memory_ids_used: List[str] = Field(default_factory=list)
+    memory_versions_used: List[int] = Field(default_factory=list)
+    memory_rendered_char_count: int = 0
+    memory_governance_applied: bool = False
     summary_only: bool = True
 
 
@@ -69,16 +82,95 @@ class EventsResponse(BaseModel):
 
 
 class FeedbackRequest(BaseModel):
-    feedback_type: Literal["approve", "reject", "correction", "comment"]
+    feedback_type: Literal[
+        "approve",
+        "reject",
+        "correction",
+        "comment",
+        "evidence_missing",
+        "ranking_wrong",
+        "candidate_irrelevant",
+        "candidate_relevant",
+        "unsafe_claim",
+    ]
     rating: Optional[int] = Field(default=None, ge=1, le=5)
     comment: str = Field(default="", max_length=1000)
     candidate_id: str = Field(default="", max_length=80)
+    report_id: str = Field(default="", max_length=120)
+    resume_version_id: str = Field(default="", max_length=120)
+    profile_version_id: str = Field(default="", max_length=120)
+    claim_ids: List[str] = Field(default_factory=list)
+    correction: Dict[str, Any] = Field(default_factory=dict)
+    request_review: bool = False
+
+    @field_validator("claim_ids")
+    @classmethod
+    def validate_claim_ids(cls, value: List[str]) -> List[str]:
+        if len(value) > 20:
+            raise ValueError("too_many_claim_ids")
+        return [str(item)[:120] for item in value]
 
 
 class FeedbackResponse(BaseModel):
     feedback_id: str
     task_id: str
     feedback_type: str
+    review_id: str = ""
+    status: str = "recorded"
+    created_at: str = ""
+    summary_only: bool = True
+
+
+class FeedbackListResponse(BaseModel):
+    task_id: str
+    feedback: List[Dict[str, Any]]
+    summary_only: bool = True
+
+
+class ReviewListResponse(BaseModel):
+    reviews: List[Dict[str, Any]]
+    summary_only: bool = True
+
+
+class ReviewResponse(BaseModel):
+    review: Dict[str, Any]
+    summary_only: bool = True
+
+
+class ReviewDecisionRequest(BaseModel):
+    decision: Literal["approve", "reject", "correct", "close"]
+    reason: str = Field(default="", max_length=1000)
+    correction: Dict[str, Any] = Field(default_factory=dict)
+    promote_to_memory: bool = False
+    memory_candidate_type: Optional[Literal["tenant_preference", "matching_rule", "task_experience", "candidate_constraint"]] = None
+    expires_at: Optional[str] = None
+    supersedes_memory_id: str = Field(default="", max_length=120)
+
+
+class ReviewDecisionResponse(BaseModel):
+    decision: Dict[str, Any]
+    review: Dict[str, Any]
+    memory_candidate: Optional[Dict[str, Any]] = None
+    summary_only: bool = True
+
+
+class MemoryCandidateListResponse(BaseModel):
+    memory_candidates: List[Dict[str, Any]]
+    summary_only: bool = True
+
+
+class MemoryCandidateResponse(BaseModel):
+    memory_candidate: Dict[str, Any]
+    summary_only: bool = True
+
+
+class MemoryResponse(BaseModel):
+    memory: Dict[str, Any]
+    summary_only: bool = True
+
+
+class MemoryListResponse(BaseModel):
+    memories: List[Dict[str, Any]]
     summary_only: bool = True
 
 

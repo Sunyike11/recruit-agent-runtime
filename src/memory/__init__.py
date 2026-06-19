@@ -21,6 +21,14 @@ from src.memory.governance import (
 )
 from src.memory.models import MemoryRecord, MemorySourceType, MemoryType
 from src.memory.store import MemorySQLiteStore
+from src.memory.review_loop import (
+    FeedbackRecord,
+    GovernedMemory,
+    HumanDecision,
+    MemoryCandidate,
+    ReviewItem,
+    ReviewMemoryStore,
+)
 
 __all__ = [
     "MemoryContext",
@@ -44,4 +52,10 @@ __all__ = [
     "memory_from_human_feedback",
     "memory_from_match_report",
     "memory_from_search_attempt",
+    "FeedbackRecord",
+    "GovernedMemory",
+    "HumanDecision",
+    "MemoryCandidate",
+    "ReviewItem",
+    "ReviewMemoryStore",
 ]

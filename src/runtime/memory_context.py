@@ -297,6 +297,8 @@ def _safe_metadata(metadata: Mapping[str, Any]) -> Dict[str, Any]:
         "memory_db_path_present": bool(metadata.get("memory_db_path_present", False)),
         "memory_store_loaded": bool(metadata.get("memory_store_loaded", False)),
         "memory_records_seen": int(metadata.get("memory_records_seen", 0) or 0),
+        "memory_ids_used": [str(item) for item in (metadata.get("memory_ids_used") or [])],
+        "memory_versions_used": [int(item) for item in (metadata.get("memory_versions_used") or [])],
         "input_count": int(metadata.get("input_count", 0) or 0),
         "target_context_keys": sorted(str(key) for key in metadata.get("target_context_keys", [])),
     }

@@ -8,12 +8,14 @@ from src.api.dependencies import (
     build_candidate_store,
     build_ingestion_submitter,
     build_resume_blob_store,
+    build_review_memory_store,
     build_runtime_store,
     build_runtime_submitter,
 )
 from src.api.errors import APIError, ServiceNotReady, api_error_handler, http_error_handler
 from src.api.routes.tasks import router as tasks_router
 from src.api.routes.candidates import router as candidates_router
+from src.api.routes.reviews import router as reviews_router
 from src.api.schemas import HealthResponse
 from src.api.task_manager import AsyncTaskManager
 from src.core.graph_factory import resolve_recruit_graph_factory_config
@@ -33,8 +35,9 @@ def create_app(
     async def lifespan(app: FastAPI):
         runtime_store = store or build_runtime_store(db_path)
         candidate_store = build_candidate_store(db_path)
+        review_memory_store = build_review_memory_store(db_path)
         blob_store = build_resume_blob_store()
-        submitter = runtime_submitter or build_runtime_submitter(runtime_store)
+        submitter = runtime_submitter or build_runtime_submitter(runtime_store, review_memory_store)
         ingestion_submitter = build_ingestion_submitter(
             runtime_store=runtime_store,
             candidate_store=candidate_store,
@@ -50,6 +53,7 @@ def create_app(
         )
         app.state.runtime_store = runtime_store
         app.state.candidate_store = candidate_store
+        app.state.review_memory_store = review_memory_store
         app.state.resume_blob_store = blob_store
         app.state.task_manager = manager
         app.state.ready = True
@@ -102,10 +106,15 @@ def create_app(
 
     @app.get("/metrics/summary")
     async def metrics_summary(request: Request):
-        return request.app.state.task_manager.metrics_summary()
+        data = request.app.state.task_manager.metrics_summary()
+        review_store = getattr(request.app.state, "review_memory_store", None)
+        if review_store is not None:
+            data.update(review_store.metrics_summary())
+        return data
 
     app.include_router(tasks_router)
     app.include_router(candidates_router)
+    app.include_router(reviews_router)
     return app
 
 

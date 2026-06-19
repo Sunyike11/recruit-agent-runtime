@@ -30,6 +30,7 @@ class APITaskRecord:
     status: str = "queued"
     graph_mode: str = "skill"
     candidate_source: str = "direct"
+    memory_mode: str = "off"
     task_type: str = "matching"
     created_at: str = field(default_factory=utc_text)
     started_at: str = ""
@@ -98,6 +99,16 @@ class AsyncTaskManager:
             "evidence_extract_ms": [],
             "index_ms": [],
             "active_version_switch_count": 0,
+            "feedback_submitted_count": 0,
+            "review_created_count": 0,
+            "review_decision_count": 0,
+            "memory_candidate_count": 0,
+            "memory_activation_count": 0,
+            "memory_rejection_count": 0,
+            "memory_revocation_count": 0,
+            "memory_context_usage_count": 0,
+            "memory_eligible_count": 0,
+            "memory_denied_count": 0,
         }
 
     async def start(self) -> None:
@@ -131,6 +142,7 @@ class AsyncTaskManager:
             idempotency_key=idempotency_key,
             request_fingerprint=fingerprint,
             candidate_source=request.candidate_source,
+            memory_mode=request.memory_mode,
         )
         self.tasks[record.task_id] = record
         self.requests[record.task_id] = request
@@ -261,6 +273,25 @@ class AsyncTaskManager:
             "evidence_extract_ms": _latency_summary(self.metrics["evidence_extract_ms"]),
             "index_ms": _latency_summary(self.metrics["index_ms"]),
             "active_version_switch_count": int(self.metrics["active_version_switch_count"]),
+            "feedback_submitted_count": int(self.metrics.get("feedback_submitted_count", 0)),
+            "review_created_count": int(self.metrics.get("review_created_count", 0)),
+            "review_decision_count": int(self.metrics.get("review_decision_count", 0)),
+            "human_intervention_rate": _intervention_rate(
+                int(self.metrics.get("feedback_submitted_count", 0)),
+                int(self.metrics.get("review_decision_count", 0)),
+                int(self.metrics["task_success_count"]) + int(self.metrics["task_failure_count"]),
+            ),
+            "memory_candidate_count": int(self.metrics.get("memory_candidate_count", 0)),
+            "memory_activation_count": int(self.metrics.get("memory_activation_count", 0)),
+            "memory_rejection_count": int(self.metrics.get("memory_rejection_count", 0)),
+            "memory_revocation_count": int(self.metrics.get("memory_revocation_count", 0)),
+            "memory_context_usage_rate": _intervention_rate(
+                int(self.metrics.get("memory_context_usage_count", 0)),
+                int(self.metrics["task_success_count"]) + int(self.metrics["task_failure_count"]),
+                0,
+            ),
+            "memory_eligible_count": int(self.metrics.get("memory_eligible_count", 0)),
+            "memory_denied_count": int(self.metrics.get("memory_denied_count", 0)),
             "summary_only": True,
         }
 
@@ -315,6 +346,10 @@ class AsyncTaskManager:
             if record.result_summary.get("fallback_succeeded"):
                 self.metrics["fallback_count"] += 1
             self.metrics["mcp_tool_success_count"] += int(record.result_summary.get("tool_success_count") or 0)
+            if record.result_summary.get("memory_context_provided"):
+                self.metrics["memory_context_usage_count"] += 1
+            self.metrics["memory_eligible_count"] += int(record.result_summary.get("memory_context_eligible_count") or 0)
+            self.metrics["memory_denied_count"] += int(record.result_summary.get("memory_context_denied_count") or 0)
             if record.task_type == "candidate_ingestion":
                 self.metrics["resume_upload_count"] += 1
                 self.metrics["parse_ms"].append(float(record.result_summary.get("parse_duration_ms") or 0))
@@ -348,6 +383,7 @@ def _fingerprint_request(request: CreateMatchingTaskRequest) -> str:
             str(len(request.jd_text or "")),
             hashlib.sha256((request.jd_text or "").strip().encode("utf-8")).hexdigest(),
             request.candidate_source,
+            request.memory_mode,
             "1" if request.allow_legacy_fallback else "0",
             ",".join(sorted(str(key) for key in request.metadata.keys())),
         ]
@@ -380,3 +416,8 @@ def _latency_summary(values: List[float]) -> Dict[str, Any]:
         "mean": round(sum(ordered) / len(ordered), 3),
         "summary_only": True,
     }
+
+
+def _intervention_rate(primary: int, secondary: int, denominator: int) -> float:
+    den = max(1, int(denominator or 0))
+    return round((int(primary or 0) + int(secondary or 0)) / den, 6)

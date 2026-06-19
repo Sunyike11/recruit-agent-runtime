@@ -140,6 +140,7 @@ class RuntimeEntryHarness:
                 runner_used=runner_used,
                 selection_metadata=selection_metadata,
             )
+            _apply_memory_context_summary(output_summary, entry_config)
             primary_health = _classify_graph_health(output_summary)
             _append_graph_attempt_event(
                 runtime_store,
@@ -552,14 +553,33 @@ class RuntimeEntryHarness:
             "thread_id": getattr(task, "thread_id", ""),
         }
         if runner_used == "production_skill_graph":
-            effective_memory_context = None
             runner_metadata.update(
                 {
-                    "allow_memory_context": False,
+                    "allow_memory_context": bool(config.allow_memory_context),
                 }
             )
         if isinstance(config.metadata, Mapping) and "memory_context_summary" in config.metadata:
             runner_metadata["memory_context_summary"] = dict(config.metadata["memory_context_summary"] or {})
+            runtime_store.append_event(
+                "memory_context_injected" if effective_memory_context is not None else "memory_context_built",
+                session_id=getattr(session, "session_id", ""),
+                task_id=getattr(task, "task_id", ""),
+                payload=build_runtime_event_payload(
+                    session_id=getattr(session, "session_id", ""),
+                    task_id=getattr(task, "task_id", ""),
+                    thread_id=getattr(task, "thread_id", ""),
+                    graph_mode=runner_metadata["graph_mode"],
+                    runner_name=runner_used,
+                    status="completed",
+                    extra={
+                        "memory_mode": str(config.metadata.get("memory_mode") or "off"),
+                        "memory_context_provided": bool(effective_memory_context is not None),
+                        "eligible_count": int((config.metadata.get("memory_context_summary") or {}).get("eligible_count") or 0),
+                        "denied_count": int((config.metadata.get("memory_context_summary") or {}).get("denied_count") or 0),
+                        "summary_only": True,
+                    },
+                ),
+            )
         try:
             if runner_used == "default_graph":
                 return runner(raw_jd, metadata=runner_metadata)
@@ -1132,6 +1152,31 @@ def _apply_graph_selection_summary(
     output_summary["critical_failure_codes"] = health["critical_failure_codes"]
     output_summary["summary_only"] = True
     return output_summary
+
+
+def _apply_memory_context_summary(output_summary: Dict[str, Any], config: RuntimeEntryConfig) -> None:
+    if not isinstance(config.metadata, Mapping):
+        return
+    summary = config.metadata.get("memory_context_summary")
+    if not isinstance(summary, Mapping):
+        output_summary.setdefault("memory_mode", str(config.metadata.get("memory_mode") or "off"))
+        output_summary["memory_context_requested"] = bool(
+            output_summary.get("memory_context_requested", False) or config.allow_memory_context
+        )
+        output_summary.setdefault("memory_context_provided", False)
+        return
+    output_summary["memory_mode"] = str(config.metadata.get("memory_mode") or "off")
+    output_summary["memory_context_summary"] = dict(summary)
+    output_summary["memory_context_requested"] = bool(config.allow_memory_context or output_summary["memory_mode"] == "governed")
+    output_summary["memory_context_provided"] = bool(summary.get("provided", False))
+    output_summary["memory_records_seen"] = int(summary.get("memory_records_seen") or 0)
+    output_summary["memory_context_eligible_count"] = int(summary.get("eligible_count") or 0)
+    output_summary["memory_context_denied_count"] = int(summary.get("denied_count") or 0)
+    output_summary["memory_context_rendered_char_count"] = int(summary.get("rendered_char_count") or 0)
+    output_summary["memory_context_governance_applied"] = bool(summary.get("governance_applied", False))
+    metadata = summary.get("metadata") if isinstance(summary.get("metadata"), Mapping) else {}
+    output_summary["memory_ids_used"] = list(metadata.get("memory_ids_used") or [])
+    output_summary["memory_versions_used"] = list(metadata.get("memory_versions_used") or [])
 
 
 def _classify_graph_health(summary: Mapping[str, Any]) -> Dict[str, Any]:

@@ -10,7 +10,9 @@ from src.domain.candidate_management import (
     profile_to_index_document,
 )
 from src.integration.production_skill_graph import ProductionSkillGraphConfig, build_production_skill_graph_runner
+from src.memory.review_loop import ReviewMemoryStore
 from src.mcp.gateway import CandidateMCPGatewayConfig, build_candidate_mcp_retrieve_callable
+from src.runtime.memory_context import RuntimeMemoryContextConfig, build_runtime_memory_context
 from src.runtime.entry import (
     RuntimeEntryResult,
     RuntimeEntryConfig,
@@ -43,6 +45,10 @@ def build_resume_blob_store(root_dir: str | None = None) -> ResumeBlobStore:
     return ResumeBlobStore(root_dir or DEFAULT_BLOB_DIR)
 
 
+def build_review_memory_store(db_path: str | None = None) -> ReviewMemoryStore:
+    return ReviewMemoryStore(db_path or DEFAULT_DB_PATH)
+
+
 def get_tenant_id(value: str | None) -> str:
     try:
         return validate_tenant_id(value or "")
@@ -52,11 +58,37 @@ def get_tenant_id(value: str | None) -> str:
         raise InvalidTenant("Invalid or missing X-Tenant-ID") from exc
 
 
-def build_runtime_submitter(store: Any) -> Callable[[CreateMatchingTaskRequest, str], Any]:
+def build_runtime_submitter(store: Any, review_memory_store: ReviewMemoryStore | None = None) -> Callable[[CreateMatchingTaskRequest, str], Any]:
     default_runner = build_default_graph_runner()
     managed_db_path = str(getattr(store, "db_path", DEFAULT_DB_PATH))
 
     def submit(request: CreateMatchingTaskRequest, tenant_id: str):
+        memory_result = None
+        memory_context = None
+        allow_memory_context = request.memory_mode == "governed"
+        if allow_memory_context and review_memory_store is not None:
+            memory_records = review_memory_store.list_active_memory_records(tenant_id=tenant_id)
+            memory_result = build_runtime_memory_context(
+                memory_records,
+                config=RuntimeMemoryContextConfig(
+                    enabled=True,
+                    tags=None,
+                    max_items=5,
+                    max_chars=1200,
+                    require_governance=True,
+                    metadata={
+                        "memory_source": "governed",
+                        "memory_records_seen": len(memory_records),
+                        "memory_store_loaded": True,
+                    },
+                ),
+                target_context={"tenant_id": tenant_id, "tags": None},
+            )
+            memory_result.metadata["memory_ids_used"] = [record.memory_id for record in memory_records[:5]]
+            memory_result.metadata["memory_versions_used"] = [
+                int((record.metadata or {}).get("version") or 1) for record in memory_records[:5]
+            ]
+            memory_context = memory_result.memory_context_preview if memory_result.provided else None
         real_retriever = None
         retrieve_callable = None
         if request.candidate_source == "mcp":
@@ -94,16 +126,28 @@ def build_runtime_submitter(store: Any) -> Callable[[CreateMatchingTaskRequest, 
             config=RuntimeEntryConfig(
                 graph_mode="skill",
                 legacy_fallback_enabled=bool(request.allow_legacy_fallback),
+                allow_memory_context=allow_memory_context,
                 db_path=None,
                 summary_only=True,
                 metadata={
                     "api": True,
                     "tenant_id": tenant_id,
                     "candidate_source": request.candidate_source,
+                    "memory_mode": request.memory_mode,
+                    "memory_context_summary": memory_result.to_summary() if memory_result is not None else {
+                        "enabled": False,
+                        "provided": False,
+                        "memory_source": "none",
+                        "memory_records_seen": 0,
+                        "eligible_count": 0,
+                        "denied_count": 0,
+                        "summary_only": True,
+                    },
                     "metadata_keys": sorted(str(key) for key in request.metadata.keys()),
                     "summary_only": True,
                 },
             ),
+            memory_context=memory_context,
         )
 
     return submit
@@ -358,6 +402,8 @@ def _ingestion_error_type(exc: Exception) -> str:
 
 def safe_task_summary(record) -> dict:
     result = record.result_summary if isinstance(record.result_summary, Mapping) else {}
+    memory_summary = result.get("memory_context_summary") if isinstance(result.get("memory_context_summary"), Mapping) else {}
+    memory_metadata = memory_summary.get("metadata") if isinstance(memory_summary.get("metadata"), Mapping) else {}
     return {
         "task_id": record.task_id,
         "session_id": record.session_id,
@@ -376,5 +422,17 @@ def safe_task_summary(record) -> dict:
         "fallback_attempted": bool(result.get("fallback_attempted", False)),
         "fallback_succeeded": bool(result.get("fallback_succeeded", False)),
         "cancel_requested": bool(record.cancel_requested),
+        "human_review_status": str(result.get("human_review_status") or "not_required"),
+        "effective_result_status": str(result.get("effective_result_status") or "original"),
+        "memory_mode": str(result.get("memory_mode") or memory_summary.get("memory_mode") or "off"),
+        "memory_context_requested": bool(result.get("memory_context_requested", False)),
+        "memory_context_provided": bool(result.get("memory_context_provided", False)),
+        "memory_records_seen": int(result.get("memory_records_seen") or memory_summary.get("memory_records_seen") or 0),
+        "memory_eligible_count": int(result.get("memory_context_eligible_count") or memory_summary.get("eligible_count") or 0),
+        "memory_denied_count": int(result.get("memory_context_denied_count") or memory_summary.get("denied_count") or 0),
+        "memory_ids_used": list(result.get("memory_ids_used") or memory_metadata.get("memory_ids_used") or []),
+        "memory_versions_used": list(result.get("memory_versions_used") or memory_metadata.get("memory_versions_used") or []),
+        "memory_rendered_char_count": int(result.get("memory_context_rendered_char_count") or memory_summary.get("rendered_char_count") or 0),
+        "memory_governance_applied": bool(result.get("memory_context_governance_applied") or memory_summary.get("governance_applied", False)),
         "summary_only": True,
     }
