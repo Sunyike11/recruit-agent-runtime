@@ -45,6 +45,8 @@ class MCPPayloadLimitExceeded(RuntimeError):
 @dataclass
 class CandidateMCPGatewayConfig:
     dataset_dir: str = "evaluation_data/v1"
+    provider_mode: str = "evaluation"
+    db_path: str = "storage/sqlite/recruit_api_runtime.sqlite"
     tenant_id: str = "public_eval"
     access_scope: str = DEFAULT_ACCESS_SCOPE
     allowed_tools: Sequence[str] = field(default_factory=lambda: sorted(ALLOWED_CANDIDATE_TOOLS))
@@ -79,6 +81,8 @@ class CandidateMCPGateway:
         self.client = client or CandidateMCPClient(
             CandidateMCPClientConfig(
                 dataset_dir=self.config.dataset_dir,
+                provider_mode=self.config.provider_mode,
+                db_path=self.config.db_path,
                 timeout_seconds=self.config.timeout_seconds,
             )
         )
@@ -267,10 +271,16 @@ class CandidateMCPGateway:
 def build_candidate_mcp_retrieve_callable(
     *,
     dataset_dir: str = "evaluation_data/v1",
+    provider_mode: str = "evaluation",
+    db_path: str = "storage/sqlite/recruit_api_runtime.sqlite",
     direct_fallback_callable: Optional[Callable[[Dict[str, Any], Any], Any]] = None,
     config: Optional[CandidateMCPGatewayConfig] = None,
 ) -> Callable[[Dict[str, Any], Any], Dict[str, Any]]:
-    gateway_config = config or CandidateMCPGatewayConfig(dataset_dir=dataset_dir)
+    gateway_config = config or CandidateMCPGatewayConfig(
+        dataset_dir=dataset_dir,
+        provider_mode=provider_mode,
+        db_path=db_path,
+    )
 
     def retrieve(input_data: Dict[str, Any], context: Any = None) -> Dict[str, Any]:
         gateway = CandidateMCPGateway(
@@ -406,4 +416,3 @@ def _error_type(exc: Exception) -> str:
     if hasattr(exc, "error_type"):
         return str(getattr(exc, "error_type"))
     return type(exc).__name__
-

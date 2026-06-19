@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Protocol, Sequence
 
 from src.evaluation.dataset import RecruitmentCandidate, load_recruitment_eval_dataset
+from src.domain.candidate_management import CandidateSQLiteStore
 from src.runtime.candidate_preview import (
     build_candidate_profile_preview_v2,
     candidate_profile_preview_v2_to_matcher_input,
@@ -52,6 +53,141 @@ class CandidateDataProvider(Protocol):
     ) -> Dict[str, Any]:
         ...
 
+
+@dataclass
+class ManagedCandidateDataProvider:
+    db_path: str | Path = "storage/sqlite/recruit_api_runtime.sqlite"
+    max_top_k: int = 20
+    max_query_chars: int = 1200
+    _store: CandidateSQLiteStore = field(init=False)
+
+    def __post_init__(self) -> None:
+        self._store = CandidateSQLiteStore(self.db_path)
+
+    def search_candidates(
+        self,
+        *,
+        query: str,
+        top_k: int,
+        required_skills: Optional[Sequence[str]] = None,
+        excluded_candidate_ids: Optional[Sequence[str]] = None,
+        tenant_id: str = "",
+        access_scope: str = "",
+        request_id: str = "",
+    ) -> Dict[str, Any]:
+        _require_scope(tenant_id=tenant_id, access_scope=access_scope)
+        tenant = str(tenant_id or "").strip()
+        if not tenant:
+            raise PermissionError("tenant_required")
+        query_text = _bounded_text(query, self.max_query_chars, "query")
+        top_k = _bounded_int(top_k, 1, self.max_top_k, "top_k")
+        required = _safe_strings(required_skills, limit=12)
+        results = self._store.search_index(
+            tenant_id=tenant,
+            query=" ".join([query_text, " ".join(required)]),
+            top_k=top_k,
+            excluded_candidate_ids=excluded_candidate_ids,
+        )
+        output = []
+        for item in results:
+            document = dict(item.get("document") or {})
+            output.append(
+                {
+                    "candidate_id": item["candidate_id"],
+                    "rank": item["rank"],
+                    "retrieval_score": item["retrieval_score"],
+                    "profile_summary": _safe_excerpt(" ".join(document.get("projects") or document.get("experience") or []), 180),
+                    "matched_skills": list(document.get("skills") or [])[:8],
+                    "evidence_ids": list(document.get("evidence_ids") or [])[:8],
+                    "source_document_id": item["resume_version_id"],
+                    "resume_version_id": item["resume_version_id"],
+                    "profile_version_id": item["profile_version_id"],
+                    "special_case_flags": {"is_special_case": False, "special_case_type": "", "summary_only": True},
+                    "summary_only": True,
+                }
+            )
+        return {
+            "server_name": SERVER_NAME,
+            "server_version": SERVER_VERSION,
+            "read_only": True,
+            "provider": "managed",
+            "results": output,
+            "result_count": len(output),
+            "request_id": str(request_id or ""),
+            "summary_only": True,
+        }
+
+    def get_candidate_profile(
+        self,
+        *,
+        candidate_id: str,
+        requested_fields: Optional[Sequence[str]] = None,
+        tenant_id: str = "",
+        access_scope: str = "",
+        request_id: str = "",
+    ) -> Dict[str, Any]:
+        _require_scope(tenant_id=tenant_id, access_scope=access_scope)
+        tenant = str(tenant_id or "").strip()
+        fields = _requested_fields(requested_fields)
+        candidate = self._store.get_candidate(tenant_id=tenant, candidate_id=candidate_id)
+        profile_record = self._store.get_profile(tenant_id=tenant, candidate_id=candidate_id)
+        profile_data = dict(profile_record.profile)
+        output: Dict[str, Any] = {
+            "candidate_id": candidate_id,
+            "profile_version": profile_record.schema_version,
+            "profile_version_id": profile_record.profile_version_id,
+            "resume_version_id": profile_record.resume_version_id,
+            "source_document_version": profile_record.resume_version_id,
+            "source_document_id": profile_record.resume_version_id,
+            "summary_only": True,
+            "request_id": str(request_id or ""),
+        }
+        if "identity" in fields:
+            output["identity"] = {
+                "candidate_id": candidate_id,
+                "display_name": profile_data.get("candidate_name") or candidate.external_ref or "",
+                "candidate_name_resolved": bool(profile_data.get("candidate_name_resolved")),
+                "source_file_name": _safe_basename(profile_data.get("source_file_name")),
+                "summary_only": True,
+            }
+        if "education" in fields:
+            output["education"] = {
+                "highest_degree": profile_data.get("highest_degree", ""),
+                "majors": list(profile_data.get("majors") or []),
+                "institutions_summary": profile_data.get("institutions_summary", ""),
+                "evidence_summaries": list(profile_data.get("education_evidence_summaries") or []),
+                "summary_only": True,
+            }
+        if "experience" in fields:
+            output["experience"] = {
+                "total_years": profile_data.get("total_years"),
+                "roles": list(profile_data.get("roles") or []),
+                "domains": list(profile_data.get("domains") or []),
+                "evidence_summaries": list(profile_data.get("experience_evidence_summaries") or []),
+                "summary_only": True,
+            }
+        if "projects" in fields:
+            output["projects"] = list(profile_data.get("projects") or [])
+        if "skills" in fields:
+            output["skills"] = list(profile_data.get("skills") or [])
+        if "skill_evidence" in fields:
+            output["skill_evidence"] = dict(profile_data.get("skill_evidence") or {})
+        if "achievements" in fields:
+            output["achievements"] = dict(profile_data.get("achievements") or {})
+        if "safety" in fields:
+            output["safety"] = {
+                "suspicious_instruction_present": bool(profile_data.get("suspicious_instruction_present")),
+                "job_description_like_content": bool(profile_data.get("job_description_like_content")),
+                "keyword_stuffing_signal": bool(profile_data.get("keyword_stuffing_signal")),
+                "filename_injection_signal": bool(profile_data.get("filename_injection_signal")),
+                "invalid_resume_structure_signal": bool(profile_data.get("invalid_resume_structure_signal")),
+                "instruction_treated_as_data": bool(profile_data.get("suspicious_instruction_present")),
+                "summary_only": True,
+            }
+        if "provenance" in fields:
+            output["field_provenance"] = dict(profile_data.get("field_provenance") or {})
+        return output
+
     def get_resume_evidence(
         self,
         *,
@@ -63,8 +199,43 @@ class CandidateDataProvider(Protocol):
         access_scope: str = "",
         request_id: str = "",
     ) -> Dict[str, Any]:
-        ...
+        _require_scope(tenant_id=tenant_id, access_scope=access_scope)
+        tenant = str(tenant_id or "").strip()
+        max_items = _bounded_int(max_items, 1, 20, "max_items")
+        candidate = self._store.get_candidate(tenant_id=tenant, candidate_id=candidate_id)
+        evidence = self._store.list_evidence(
+            tenant_id=tenant,
+            candidate_id=candidate_id,
+            evidence_ids=evidence_ids,
+            field_names=field_names,
+            limit=max_items,
+        )
+        items = []
+        for item in evidence:
+            data = item.to_dict()
+            data["source_document_id"] = item.resume_version_id
+            data["document_version"] = item.resume_version_id
+            items.append(data)
+        return {
+            "server_name": SERVER_NAME,
+            "candidate_id": candidate_id,
+            "resume_version_id": candidate.active_resume_version_id,
+            "profile_version_id": candidate.active_profile_version_id,
+            "evidence": items,
+            "evidence_count": len(items),
+            "source_document_id": candidate.active_resume_version_id,
+            "document_version": candidate.active_resume_version_id,
+            "request_id": str(request_id or ""),
+            "summary_only": True,
+        }
 
+    def matcher_profile_for_candidate(self, candidate_id: str, tenant_id: str = "") -> Dict[str, Any]:
+        return self.get_candidate_profile(
+            candidate_id=candidate_id,
+            requested_fields=sorted(ALLOWED_PROFILE_FIELDS),
+            tenant_id=tenant_id,
+            access_scope="managed_candidates",
+        )
 
 @dataclass
 class EvaluationDatasetCandidateProvider:
@@ -444,4 +615,3 @@ def _has_suspicious_instruction(text: str) -> bool:
 
 def _safe_basename(value: Any) -> str:
     return Path(str(value or "")).name
-

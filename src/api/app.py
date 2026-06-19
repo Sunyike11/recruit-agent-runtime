@@ -4,9 +4,16 @@ from typing import Any, Callable, Optional
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.api.dependencies import build_runtime_store, build_runtime_submitter
+from src.api.dependencies import (
+    build_candidate_store,
+    build_ingestion_submitter,
+    build_resume_blob_store,
+    build_runtime_store,
+    build_runtime_submitter,
+)
 from src.api.errors import APIError, ServiceNotReady, api_error_handler, http_error_handler
 from src.api.routes.tasks import router as tasks_router
+from src.api.routes.candidates import router as candidates_router
 from src.api.schemas import HealthResponse
 from src.api.task_manager import AsyncTaskManager
 from src.core.graph_factory import resolve_recruit_graph_factory_config
@@ -25,15 +32,25 @@ def create_app(
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         runtime_store = store or build_runtime_store(db_path)
+        candidate_store = build_candidate_store(db_path)
+        blob_store = build_resume_blob_store()
         submitter = runtime_submitter or build_runtime_submitter(runtime_store)
+        ingestion_submitter = build_ingestion_submitter(
+            runtime_store=runtime_store,
+            candidate_store=candidate_store,
+            blob_store=blob_store,
+        )
         manager = AsyncTaskManager(
             store=runtime_store,
             runtime_submitter=submitter,
+            ingestion_submitter=ingestion_submitter,
             worker_count=worker_count,
             queue_max_size=queue_max_size,
             task_timeout_seconds=task_timeout_seconds,
         )
         app.state.runtime_store = runtime_store
+        app.state.candidate_store = candidate_store
+        app.state.resume_blob_store = blob_store
         app.state.task_manager = manager
         app.state.ready = True
         await manager.start()
@@ -79,6 +96,7 @@ def create_app(
             "runtime_store_available": bool(getattr(request.app.state, "runtime_store", None)),
             "graph_factory_default_mode": graph_config.mode.value,
             "candidate_source_values": ["direct", "mcp"],
+            "candidate_ingestion_available": True,
             "summary_only": True,
         }
 
@@ -87,6 +105,7 @@ def create_app(
         return request.app.state.task_manager.metrics_summary()
 
     app.include_router(tasks_router)
+    app.include_router(candidates_router)
     return app
 
 

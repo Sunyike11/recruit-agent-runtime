@@ -32,6 +32,8 @@ class MCPSchemaError(CandidateMCPError):
 @dataclass
 class CandidateMCPClientConfig:
     dataset_dir: str = "evaluation_data/v1"
+    provider_mode: str = "evaluation"
+    db_path: str = "storage/sqlite/recruit_api_runtime.sqlite"
     command: str = sys.executable
     server_script: str = str(PROJECT_ROOT / "scripts" / "run_candidate_mcp_server.py")
     cwd: str = str(PROJECT_ROOT)
@@ -102,6 +104,10 @@ class CandidateMCPClient:
                 self.config.server_script,
                 "--dataset-dir",
                 self.config.dataset_dir,
+                "--provider-mode",
+                self.config.provider_mode,
+                "--db-path",
+                self.config.db_path,
             ],
             cwd=self.config.cwd,
             env=self.config.env,

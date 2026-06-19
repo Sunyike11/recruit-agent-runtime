@@ -8,11 +8,20 @@ from src.mcp.candidate_provider import (
     SERVER_NAME,
     SERVER_VERSION,
     EvaluationDatasetCandidateProvider,
+    ManagedCandidateDataProvider,
 )
 
 
-def create_candidate_mcp_server(dataset_dir: str | Path = "evaluation_data/v1") -> FastMCP:
-    provider = EvaluationDatasetCandidateProvider(dataset_dir=dataset_dir)
+def create_candidate_mcp_server(
+    dataset_dir: str | Path = "evaluation_data/v1",
+    *,
+    provider_mode: str = "evaluation",
+    db_path: str | Path = "storage/sqlite/recruit_api_runtime.sqlite",
+) -> FastMCP:
+    if provider_mode == "managed":
+        provider = ManagedCandidateDataProvider(db_path=db_path)
+    else:
+        provider = EvaluationDatasetCandidateProvider(dataset_dir=dataset_dir)
     server = FastMCP(SERVER_NAME)
 
     @server.tool(
@@ -91,4 +100,3 @@ def server_metadata() -> Dict[str, Any]:
         "tool_count": 3,
         "summary_only": True,
     }
-
