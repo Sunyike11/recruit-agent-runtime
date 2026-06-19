@@ -153,6 +153,38 @@ curl -N -H "X-Tenant-ID: demo_tenant" \
 
 API 当前提供 `POST /matching/tasks`、`GET /tasks/{task_id}`、`GET /tasks/{task_id}/events`、`GET /tasks/{task_id}/stream`、`POST /tasks/{task_id}/feedback`、`POST /tasks/{task_id}/cancel`。第一版使用进程内有界 worker queue；PostgreSQL、Redis、Celery 和完整认证属于后续计划。
 
+### 上传候选人简历版本
+
+创建候选人：
+
+```bash
+curl -X POST "http://127.0.0.1:8765/candidates" \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-ID: demo_tenant" \
+  -H "Idempotency-Key: candidate-001" \
+  -d '{"external_ref": "optional-demo-ref"}'
+```
+
+上传不可变 ResumeVersion：
+
+```bash
+curl -X POST "http://127.0.0.1:8765/candidates/<candidate_id>/resume-versions" \
+  -H "X-Tenant-ID: demo_tenant" \
+  -H "Idempotency-Key: resume-version-001" \
+  -F "file=@./local_private_resume.txt;type=text/plain"
+```
+
+上传接口支持 PDF、DOCX、TXT。服务端按内容计算 SHA-256，同一 tenant / candidate 下重复上传相同内容会返回已有 `resume_version_id`，不会重复解析和索引；不同内容会创建新的不可变版本，只有解析、证据生成和候选人级索引全部成功后才切换为 active version。
+
+查询候选人画像：
+
+```bash
+curl -H "X-Tenant-ID: demo_tenant" \
+  "http://127.0.0.1:8765/candidates/<candidate_id>/profile"
+```
+
+候选人摄取同样走 Runtime task、SkillExecutor 和事件流，内部使用 `resume_parse@1.0.0` 与 `evidence_extract@1.0.0` 生成 CandidateProfilePreview v2 与 ResumeEvidence。上传后的 active candidate 可以通过 Candidate MCP 被 `candidate_source=mcp` 匹配任务检索到。
+
 ### 查看任务事件
 
 ```bash
@@ -216,8 +248,9 @@ docs/            对外架构、评估和路线说明
 - [x] Observation-only Claim Verification Skill
 - [x] Candidate MCP server with three read-only tools
 - [x] FastAPI Runtime Service MVP
-- [ ] FastAPI resume upload UI / endpoint
+- [x] Candidate creation and immutable ResumeVersion upload
 - [ ] Durable async queue and production database
+- [ ] FastAPI resume upload UI
 - [ ] Production observability
 
 当前可用：
@@ -229,13 +262,15 @@ docs/            对外架构、评估和路线说明
 - Legacy 硬故障回滚
 - Candidate MCP stdio server 和只读工具访问
 - FastAPI 异步任务、事件查询、SSE、反馈与取消
+- Candidate 创建、content-hash 幂等上传、不可变 ResumeVersion
+- `resume_parse` / `evidence_extract` 摄取 Skill
 - 离线评估与安全测试
 
 Coming Soon：
 
-- FastAPI 简历上传接口
 - PostgreSQL / Redis
 - durable async queue / task ownership
+- object storage adapter / virus scan / OCR
 - OpenTelemetry 与监控面板
 
 ## 数据与隐私说明
@@ -255,6 +290,8 @@ Coming Soon：
 Candidate MCP Server 默认只暴露三个只读工具，并包含 allowlist、参数校验、timeout、调用预算、tenant/access scope contract 和 summary-only Runtime events。简历中的 Prompt Injection 文本只会被当作候选人数据处理，不会改变工具权限或扩大返回字段。
 
 FastAPI Runtime Service 要求业务接口携带 `X-Tenant-ID`，创建任务建议提供 `Idempotency-Key`。当前多租户能力是 MVP 级隔离 contract：任务、事件、反馈和取消按 tenant 校验；完整认证、授权、速率限制和分布式任务队列仍在 roadmap。
+
+候选人上传文件保存在本地 `storage/` 下，该目录被 `.gitignore` 排除。当前版本不会执行上传文件中的脚本或宏，不支持 OCR，也不声称具备病毒扫描或对象存储能力；这些属于后续生产化工作。
 
 ## License
 

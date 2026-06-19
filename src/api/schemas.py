@@ -48,6 +48,7 @@ class TaskSummaryResponse(BaseModel):
     status: str
     graph_mode: str = "skill"
     candidate_source: str = "direct"
+    task_type: str = "matching"
     created_at: str
     started_at: str = ""
     completed_at: str = ""
@@ -91,6 +92,84 @@ class CancelResponse(BaseModel):
 
 class HealthResponse(BaseModel):
     status: str
+    summary_only: bool = True
+
+
+class CreateCandidateRequest(BaseModel):
+    external_ref: str = Field(default="", max_length=120)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+    @field_validator("metadata")
+    @classmethod
+    def validate_metadata(cls, value: Dict[str, Any]) -> Dict[str, Any]:
+        return CreateMatchingTaskRequest.validate_metadata(value)
+
+
+class CreateCandidateResponse(BaseModel):
+    candidate_id: str
+    status: str
+    created: bool
+    idempotency_replayed: bool
+    created_at: str
+    summary_only: bool = True
+
+
+class CandidateSummaryResponse(BaseModel):
+    candidate_id: str
+    tenant_id: str
+    status: str
+    active_resume_version_id: str = ""
+    active_profile_version_id: str = ""
+    resume_version_count: int = 0
+    created_at: str
+    updated_at: str
+    summary_only: bool = True
+
+
+class ResumeVersionUploadResponse(BaseModel):
+    candidate_id: str
+    resume_version_id: str
+    version_number: int
+    content_hash_prefix: str
+    status: str
+    ingestion_task_id: str
+    created: bool
+    duplicate_content: bool
+    summary_only: bool = True
+
+
+class ResumeVersionSummaryResponse(BaseModel):
+    candidate_id: str
+    resume_version_id: str
+    version_number: int
+    content_hash_prefix: str
+    original_filename_safe: str
+    media_type: str
+    file_size: int
+    status: str
+    parser_version: str
+    profile_version: str
+    index_version: str
+    created_at: str
+    ready_at: str = ""
+    supersedes_version_id: str = ""
+    error_type: str = ""
+    ingestion_task_id: str = ""
+    summary_only: bool = True
+
+
+class ResumeVersionListResponse(BaseModel):
+    candidate_id: str
+    resume_versions: List[ResumeVersionSummaryResponse]
+    summary_only: bool = True
+
+
+class CandidateProfileResponse(BaseModel):
+    candidate_id: str
+    profile_version_id: str
+    resume_version_id: str
+    schema_version: str
+    profile: Dict[str, Any]
     summary_only: bool = True
 
 

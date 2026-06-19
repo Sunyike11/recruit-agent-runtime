@@ -30,6 +30,7 @@ class APITaskRecord:
     status: str = "queued"
     graph_mode: str = "skill"
     candidate_source: str = "direct"
+    task_type: str = "matching"
     created_at: str = field(default_factory=utc_text)
     started_at: str = ""
     completed_at: str = ""
@@ -56,12 +57,14 @@ class AsyncTaskManager:
         *,
         store: Any,
         runtime_submitter: Callable[[CreateMatchingTaskRequest, str], RuntimeEntryResult],
+        ingestion_submitter: Optional[Callable[[Any, str], RuntimeEntryResult]] = None,
         worker_count: int = 2,
         queue_max_size: int = 20,
         task_timeout_seconds: float = 120.0,
     ):
         self.store = store
         self.runtime_submitter = runtime_submitter
+        self.ingestion_submitter = ingestion_submitter
         self.worker_count = int(worker_count)
         self.queue: asyncio.Queue[str] = asyncio.Queue(maxsize=int(queue_max_size))
         self.task_timeout_seconds = float(task_timeout_seconds)
@@ -84,6 +87,17 @@ class AsyncTaskManager:
             "sse_first_event_ms": [],
             "mcp_tool_success_count": 0,
             "mcp_tool_failure_count": 0,
+            "candidate_created_count": 0,
+            "resume_upload_count": 0,
+            "duplicate_upload_count": 0,
+            "ingestion_success_count": 0,
+            "ingestion_failure_count": 0,
+            "ingestion_cancel_count": 0,
+            "ingestion_end_to_end_ms": [],
+            "parse_ms": [],
+            "evidence_extract_ms": [],
+            "index_ms": [],
+            "active_version_switch_count": 0,
         }
 
     async def start(self) -> None:
@@ -117,6 +131,35 @@ class AsyncTaskManager:
             idempotency_key=idempotency_key,
             request_fingerprint=fingerprint,
             candidate_source=request.candidate_source,
+        )
+        self.tasks[record.task_id] = record
+        self.requests[record.task_id] = request
+        self.idempotency[idem_key] = IdempotencyEntry(record.task_id, fingerprint)
+        self.metrics["task_created_count"] += 1
+        await self.queue.put(record.task_id)
+        return record, False
+
+    async def submit_ingestion(self, tenant_id: str, idempotency_key: str, request: Any) -> tuple[APITaskRecord, bool]:
+        self.metrics["request_count"] += 1
+        fingerprint = _fingerprint_ingestion_request(request)
+        idem_key = (tenant_id, idempotency_key)
+        existing = self.idempotency.get(idem_key)
+        if existing:
+            if existing.fingerprint != fingerprint:
+                self.metrics["request_error_count"] += 1
+                raise IdempotencyConflict("Idempotency key already used for a different request")
+            return self.tasks[existing.task_id], True
+        if self.queue.full():
+            self.metrics["request_error_count"] += 1
+            raise QueueFull("Task queue is full")
+        record = APITaskRecord(
+            task_id=str(uuid.uuid4()),
+            session_id=str(uuid.uuid4()),
+            tenant_id=tenant_id,
+            idempotency_key=idempotency_key,
+            request_fingerprint=fingerprint,
+            candidate_source="managed",
+            task_type="candidate_ingestion",
         )
         self.tasks[record.task_id] = record
         self.requests[record.task_id] = request
@@ -207,6 +250,17 @@ class AsyncTaskManager:
             "fallback_count": int(self.metrics["fallback_count"]),
             "mcp_tool_success_count": int(self.metrics["mcp_tool_success_count"]),
             "mcp_tool_failure_count": int(self.metrics["mcp_tool_failure_count"]),
+            "candidate_created_count": int(self.metrics["candidate_created_count"]),
+            "resume_upload_count": int(self.metrics["resume_upload_count"]),
+            "duplicate_upload_count": int(self.metrics["duplicate_upload_count"]),
+            "ingestion_success_count": int(self.metrics["ingestion_success_count"]),
+            "ingestion_failure_count": int(self.metrics["ingestion_failure_count"]),
+            "ingestion_cancel_count": int(self.metrics["ingestion_cancel_count"]),
+            "ingestion_end_to_end_ms": _latency_summary(self.metrics["ingestion_end_to_end_ms"]),
+            "parse_ms": _latency_summary(self.metrics["parse_ms"]),
+            "evidence_extract_ms": _latency_summary(self.metrics["evidence_extract_ms"]),
+            "index_ms": _latency_summary(self.metrics["index_ms"]),
+            "active_version_switch_count": int(self.metrics["active_version_switch_count"]),
             "summary_only": True,
         }
 
@@ -233,8 +287,11 @@ class AsyncTaskManager:
         self.metrics["queue_wait_ms"].append((record.queue_started_at - record.queue_entered_at) * 1000)
         loop = asyncio.get_running_loop()
         try:
+            submitter = self.ingestion_submitter if record.task_type == "candidate_ingestion" else self.runtime_submitter
+            if submitter is None:
+                raise RuntimeError("submitter_missing")
             result = await asyncio.wait_for(
-                loop.run_in_executor(self.executor, self.runtime_submitter, request, record.tenant_id),
+                loop.run_in_executor(self.executor, submitter, request, record.tenant_id),
                 timeout=self.task_timeout_seconds,
             )
             record.runtime_task_id = result.task_id
@@ -245,27 +302,44 @@ class AsyncTaskManager:
             if str(final_status) in {"completed", "ok"}:
                 record.status = "completed"
                 self.metrics["task_success_count"] += 1
+                if record.task_type == "candidate_ingestion":
+                    self.metrics["ingestion_success_count"] += 1
             elif str(final_status) == "completed_with_fallback":
                 record.status = "completed_with_fallback"
                 self.metrics["task_success_count"] += 1
             else:
                 record.status = "failed"
                 self.metrics["task_failure_count"] += 1
+                if record.task_type == "candidate_ingestion":
+                    self.metrics["ingestion_failure_count"] += 1
             if record.result_summary.get("fallback_succeeded"):
                 self.metrics["fallback_count"] += 1
             self.metrics["mcp_tool_success_count"] += int(record.result_summary.get("tool_success_count") or 0)
+            if record.task_type == "candidate_ingestion":
+                self.metrics["resume_upload_count"] += 1
+                self.metrics["parse_ms"].append(float(record.result_summary.get("parse_duration_ms") or 0))
+                self.metrics["evidence_extract_ms"].append(float(record.result_summary.get("evidence_extract_duration_ms") or 0))
+                self.metrics["index_ms"].append(float(record.result_summary.get("index_duration_ms") or 0))
+                if record.result_summary.get("active_version_switched"):
+                    self.metrics["active_version_switch_count"] += 1
         except asyncio.TimeoutError:
             record.status = "failed"
             record.error_type = "TaskTimeout"
             self.metrics["task_failure_count"] += 1
+            if record.task_type == "candidate_ingestion":
+                self.metrics["ingestion_failure_count"] += 1
         except Exception as exc:
             record.status = "failed"
             record.error_type = type(exc).__name__
             self.metrics["task_failure_count"] += 1
+            if record.task_type == "candidate_ingestion":
+                self.metrics["ingestion_failure_count"] += 1
         finally:
             record.completed_at = utc_text()
             record.completed_perf = time.perf_counter()
             self.metrics["end_to_end_task_ms"].append((record.completed_perf - record.queue_entered_at) * 1000)
+            if record.task_type == "candidate_ingestion":
+                self.metrics["ingestion_end_to_end_ms"].append((record.completed_perf - record.queue_entered_at) * 1000)
 
 
 def _fingerprint_request(request: CreateMatchingTaskRequest) -> str:
@@ -276,6 +350,18 @@ def _fingerprint_request(request: CreateMatchingTaskRequest) -> str:
             request.candidate_source,
             "1" if request.allow_legacy_fallback else "0",
             ",".join(sorted(str(key) for key in request.metadata.keys())),
+        ]
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def _fingerprint_ingestion_request(request: Any) -> str:
+    canonical = "|".join(
+        [
+            str(getattr(request, "candidate_id", "")),
+            str(getattr(request, "resume_version_id", "")),
+            str(getattr(request, "content_hash", "")),
+            str(getattr(request, "file_size", "")),
         ]
     )
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
